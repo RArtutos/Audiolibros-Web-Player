@@ -1,0 +1,1284 @@
+{
+    "ZOONIDOS INMERSIVOS PARA NIÑOS CURIOSOS": {
+        "title": "ZOONIDOS INMERSIVOS PARA NIÑOS CURIOSOS",
+        "authors": [
+            "ReadingU",
+            {
+                "id": "426717",
+                "name": "ReadingU",
+                "deepLink": "storytel://vertical-list/explore/lists/authors/426717"
+            }
+        ],
+        "narrators": [
+            "ReadingU",
+            {
+                "id": "426717",
+                "name": "ReadingU",
+                "deepLink": "storytel://vertical-list/explore/lists/narrators/426717"
+            }
+        ],
+        "genres": [
+            "Audiobook",
+            "Children"
+        ],
+        "scrape_url": "https://storytel.com/books/zoonidos-inmersivos-para-niños-curiosos-2203539",
+        "language": "spa",
+        "description": "Microcuentos sonoros con música y efectos para cautivar a los más pequeños. Conoce a Lulo y Nina, dos primos muy curiosos, y a sus amigos: Rufus el hornero, Júpiter el gato bebé, Babalú el perro, Lola la ola y Franca la Ballena.",
+        "isbn": "9789878376745",
+        "publisher": "Readingu",
+        "release_date": "2022-02-20",
+        "idDownload": "13rRy8Pr2cnr32i0S0duh_7UM5Rqku0bM",
+        "deepLink": "storytel://book-details-page/book-details/consumables/2203539",
+        "shareUrl": "https://www.storytel.com/books/3814052?appRedirect=true",
+        "kidsBook": true,
+        "autoPlay": false,
+        "formats": [
+            {
+                "type": "abook",
+                "durationInMilliseconds": 5539000,
+                "chapters": [
+                    {
+                        "number": 1,
+                        "durationInSeconds": 914,
+                        "durationInMilliseconds": 913946,
+                        "title": "Chapter 1"
+                    },
+                    {
+                        "number": 2,
+                        "durationInSeconds": 845,
+                        "durationInMilliseconds": 845453,
+                        "title": "Chapter 2"
+                    },
+                    {
+                        "number": 3,
+                        "durationInSeconds": 937,
+                        "durationInMilliseconds": 936803,
+                        "title": "Chapter 3"
+                    },
+                    {
+                        "number": 4,
+                        "durationInSeconds": 48,
+                        "durationInMilliseconds": 47569,
+                        "title": "Chapter 4"
+                    },
+                    {
+                        "number": 5,
+                        "durationInSeconds": 1409,
+                        "durationInMilliseconds": 1409123,
+                        "title": "Chapter 5"
+                    },
+                    {
+                        "number": 6,
+                        "durationInSeconds": 298,
+                        "durationInMilliseconds": 297822,
+                        "title": "Chapter 6"
+                    },
+                    {
+                        "number": 7,
+                        "durationInSeconds": 125,
+                        "durationInMilliseconds": 124630,
+                        "title": "Chapter 7"
+                    },
+                    {
+                        "number": 8,
+                        "durationInSeconds": 206,
+                        "durationInMilliseconds": 205949,
+                        "title": "Chapter 8"
+                    },
+                    {
+                        "number": 9,
+                        "durationInSeconds": 235,
+                        "durationInMilliseconds": 235442,
+                        "title": "Chapter 9"
+                    },
+                    {
+                        "number": 10,
+                        "durationInSeconds": 373,
+                        "durationInMilliseconds": 373394,
+                        "title": "Chapter 10"
+                    },
+                    {
+                        "number": 11,
+                        "durationInSeconds": 149,
+                        "durationInMilliseconds": 149002,
+                        "title": "Chapter 11"
+                    }
+                ],
+                "cover": {
+                    "url": "https://covers.storytel.com/jpg-640/9789878376745.055df0a6-afe2-42c0-b922-1d34b32bab45?optimize=high",
+                    "width": 640,
+                    "height": 640
+                },
+                "takedownDate": null
+            },
+            {
+                "id": "2202400",
+                "type": "abook",
+                "releaseDate": "2022-02-20T00:00:00Z",
+                "availabilityInfo": [
+                    {
+                        "isReleased": true,
+                        "releaseDate": "2022-02-20T00:00:00Z",
+                        "type": "subscription"
+                    }
+                ],
+                "isGeoRestricted": false,
+                "isReleased": true,
+                "publisher": {
+                    "name": "Readingu"
+                },
+                "isLockedContent": false
+            }
+        ],
+        "consumableId": "2203539",
+        "bookId": 3814052,
+        "originalTitle": "",
+        "isAbridged": false,
+        "audiobookSampleUrl": "https://audio-previews.storytel.net/assets/consumables/2203539/abook/preview",
+        "trailerData": null,
+        "ratings": {
+            "averageRating": 0.0,
+            "numberOfRatings": 0
+        },
+        "cover": {
+            "url": "https://covers.storytel.com/jpg-640/9789878376745.055df0a6-afe2-42c0-b922-1d34b32bab45?optimize=high",
+            "width": 640,
+            "height": 640
+        },
+        "category": {
+            "name": "Children",
+            "deepLink": null
+        },
+        "translators": [],
+        "seriesInfo": null,
+        "duration": {
+            "hours": 1,
+            "minutes": 32,
+            "seconds": 19
+        },
+        "similarBooksContentBlock": {
+            "displayType": "horizontalList",
+            "title": "Similar titles",
+            "id": "similar-books-2203539",
+            "subtitle": null,
+            "itemsUrl": "https://api.storytel.net/explore/lists/similar-books/2203539?includeListDetails=false",
+            "deepLink": "storytel://vertical-list/explore/lists/similar-books/2203539?includeListDetails=true"
+        },
+        "similarItemsPageDeepLink": "storytel://inspirational-page/explore/similar-items/2203539",
+        "analytics": {
+            "id": "book-details-2203539"
+        },
+        "showCobranding": false,
+        "userNotices": [],
+        "type": "detailedBook",
+        "_download_url_isbn": "9789878376745"
+    },
+    "Zorba el griego: (Vida y andanzas de Alexis Zorba)": {
+        "title": "Zorba el griego: (Vida y andanzas de Alexis Zorba)",
+        "authors": [
+            "Nikos Kazantzakis",
+            {
+                "id": "26572",
+                "name": "Nikos Kazantzakis",
+                "deepLink": "storytel://vertical-list/explore/lists/authors/26572"
+            }
+        ],
+        "narrators": [
+            "Germán Gijón",
+            {
+                "id": "53863",
+                "name": "Germán Gijón",
+                "deepLink": "storytel://vertical-list/explore/lists/narrators/53863"
+            }
+        ],
+        "genres": [
+            "Audiobook",
+            "Fiction"
+        ],
+        "scrape_url": "https://storytel.com/books/zorba-el-griego-vida-y-andanzas-de-alexis-zorba-947040",
+        "language": "spa",
+        "description": "Esta novela escrita entre 1941 y 1943, en la que se inspiró la película protagonizada por Anthony Quinn e Irene Papas, narra la historia de Zorba, un hombre sencillo y un apasionado de la vida que nos descubre su singular sentido de la libertad, el amor y el coraje: «Si hoy tuviera que elegir en el mundo entero un guía espiritual, un gurú como lo llaman los indios […], seguro que elegiría a Zorba. Porque él tenía lo que un escritorzuelo necesita para salvarse: la mirada primigenia que, de un flechazo, atrapa su presa en vuelo; el instinto creativo, cada mañana renovado, de mirarlo siempre todo como si fuese por primera vez, devolviendo la virginidad a los elementos eternos—viento, mar, fuego, mujer, pan—de nuestra vida cotidiana». Un libro impetuoso, apasionado y lleno de vida, que nos arrastra a esa sensación originaria de plenitud que sólo la literatura de verdad puede alcanzar.",
+        "isbn": "9789179235802",
+        "publisher": "Acantilado",
+        "release_date": "2018-10-19",
+        "idDownload": "13BqKL2vcMBvVjbMrBlu329kbHFg66K9m",
+        "deepLink": "storytel://book-details-page/book-details/consumables/947040",
+        "shareUrl": "https://www.storytel.com/books/1766397?appRedirect=true",
+        "kidsBook": false,
+        "autoPlay": false,
+        "formats": [
+            {
+                "type": "ebook",
+                "lengthInCharacters": 599002,
+                "cover": {
+                    "url": "https://covers.storytel.com/jpg-640/9788417346393.31f534c3-cfc2-4d65-b7e0-e7fe3c1f6d64?optimize=high",
+                    "width": 406,
+                    "height": 640
+                }
+            },
+            {
+                "type": "abook",
+                "durationInMilliseconds": 44898000,
+                "chapters": [
+                    {
+                        "number": 1,
+                        "durationInSeconds": 896,
+                        "durationInMilliseconds": 896000,
+                        "title": ""
+                    },
+                    {
+                        "number": 2,
+                        "durationInSeconds": 1890,
+                        "durationInMilliseconds": 1890000,
+                        "title": ""
+                    },
+                    {
+                        "number": 3,
+                        "durationInSeconds": 2230,
+                        "durationInMilliseconds": 2230000,
+                        "title": ""
+                    },
+                    {
+                        "number": 4,
+                        "durationInSeconds": 2011,
+                        "durationInMilliseconds": 2011000,
+                        "title": ""
+                    },
+                    {
+                        "number": 5,
+                        "durationInSeconds": 1987,
+                        "durationInMilliseconds": 1987000,
+                        "title": ""
+                    },
+                    {
+                        "number": 6,
+                        "durationInSeconds": 1396,
+                        "durationInMilliseconds": 1396000,
+                        "title": ""
+                    },
+                    {
+                        "number": 7,
+                        "durationInSeconds": 2198,
+                        "durationInMilliseconds": 2198000,
+                        "title": ""
+                    },
+                    {
+                        "number": 8,
+                        "durationInSeconds": 1265,
+                        "durationInMilliseconds": 1265000,
+                        "title": ""
+                    },
+                    {
+                        "number": 9,
+                        "durationInSeconds": 2237,
+                        "durationInMilliseconds": 2237000,
+                        "title": ""
+                    },
+                    {
+                        "number": 10,
+                        "durationInSeconds": 1152,
+                        "durationInMilliseconds": 1152000,
+                        "title": ""
+                    },
+                    {
+                        "number": 11,
+                        "durationInSeconds": 1369,
+                        "durationInMilliseconds": 1369000,
+                        "title": ""
+                    },
+                    {
+                        "number": 12,
+                        "durationInSeconds": 1609,
+                        "durationInMilliseconds": 1609000,
+                        "title": ""
+                    },
+                    {
+                        "number": 13,
+                        "durationInSeconds": 1507,
+                        "durationInMilliseconds": 1507000,
+                        "title": ""
+                    },
+                    {
+                        "number": 14,
+                        "durationInSeconds": 1614,
+                        "durationInMilliseconds": 1614000,
+                        "title": ""
+                    },
+                    {
+                        "number": 15,
+                        "durationInSeconds": 1440,
+                        "durationInMilliseconds": 1440000,
+                        "title": ""
+                    },
+                    {
+                        "number": 16,
+                        "durationInSeconds": 1431,
+                        "durationInMilliseconds": 1431000,
+                        "title": ""
+                    },
+                    {
+                        "number": 17,
+                        "durationInSeconds": 1466,
+                        "durationInMilliseconds": 1466000,
+                        "title": ""
+                    },
+                    {
+                        "number": 18,
+                        "durationInSeconds": 1475,
+                        "durationInMilliseconds": 1475000,
+                        "title": ""
+                    },
+                    {
+                        "number": 19,
+                        "durationInSeconds": 1722,
+                        "durationInMilliseconds": 1722000,
+                        "title": ""
+                    },
+                    {
+                        "number": 20,
+                        "durationInSeconds": 1341,
+                        "durationInMilliseconds": 1341000,
+                        "title": ""
+                    },
+                    {
+                        "number": 21,
+                        "durationInSeconds": 1393,
+                        "durationInMilliseconds": 1393000,
+                        "title": ""
+                    },
+                    {
+                        "number": 22,
+                        "durationInSeconds": 1558,
+                        "durationInMilliseconds": 1558000,
+                        "title": ""
+                    },
+                    {
+                        "number": 23,
+                        "durationInSeconds": 1640,
+                        "durationInMilliseconds": 1640000,
+                        "title": ""
+                    },
+                    {
+                        "number": 24,
+                        "durationInSeconds": 1913,
+                        "durationInMilliseconds": 1913000,
+                        "title": ""
+                    },
+                    {
+                        "number": 25,
+                        "durationInSeconds": 1852,
+                        "durationInMilliseconds": 1852000,
+                        "title": ""
+                    },
+                    {
+                        "number": 26,
+                        "durationInSeconds": 2348,
+                        "durationInMilliseconds": 2348000,
+                        "title": ""
+                    },
+                    {
+                        "number": 27,
+                        "durationInSeconds": 1957,
+                        "durationInMilliseconds": 1957000,
+                        "title": ""
+                    }
+                ],
+                "cover": {
+                    "url": "https://covers.storytel.com/jpg-640/9789179235802.bdaa50b0-447e-47fe-b315-4cfede249c9e?optimize=high",
+                    "width": 640,
+                    "height": 640
+                },
+                "takedownDate": null
+            },
+            {
+                "id": "760949",
+                "type": "ebook",
+                "releaseDate": "2018-10-19T00:00:00Z",
+                "availabilityInfo": [
+                    {
+                        "isReleased": true,
+                        "releaseDate": "2018-10-19T00:00:00Z",
+                        "type": "subscription"
+                    }
+                ],
+                "isGeoRestricted": false,
+                "isReleased": true,
+                "publisher": {
+                    "name": "Acantilado"
+                },
+                "isLockedContent": false
+            },
+            {
+                "id": "946667",
+                "type": "abook",
+                "releaseDate": "2020-07-10T00:00:00Z",
+                "availabilityInfo": [
+                    {
+                        "isReleased": true,
+                        "releaseDate": "2020-07-10T00:00:00Z",
+                        "type": "subscription"
+                    }
+                ],
+                "isGeoRestricted": false,
+                "isReleased": true,
+                "publisher": {
+                    "name": "Storyside"
+                },
+                "isLockedContent": false
+            }
+        ],
+        "consumableId": "947040",
+        "bookId": 1766397,
+        "originalTitle": "",
+        "isAbridged": false,
+        "audiobookSampleUrl": "https://audio-previews.storytel.net/assets/consumables/947040/abook/preview",
+        "trailerData": null,
+        "ratings": {
+            "averageRating": 4.25,
+            "numberOfRatings": 97
+        },
+        "cover": {
+            "url": "https://covers.storytel.com/jpg-640/9789179235802.bdaa50b0-447e-47fe-b315-4cfede249c9e?optimize=high",
+            "width": 640,
+            "height": 640
+        },
+        "category": {
+            "name": "Fiction",
+            "deepLink": null
+        },
+        "translators": [
+            {
+                "id": "61976",
+                "name": "Selma Ancira",
+                "deepLink": ""
+            }
+        ],
+        "seriesInfo": null,
+        "duration": {
+            "hours": 12,
+            "minutes": 28,
+            "seconds": 18
+        },
+        "similarBooksContentBlock": {
+            "displayType": "horizontalList",
+            "title": "Similar titles",
+            "id": "similar-books-947040",
+            "subtitle": null,
+            "itemsUrl": "https://api.storytel.net/explore/lists/similar-books/947040?includeListDetails=false",
+            "deepLink": "storytel://vertical-list/explore/lists/similar-books/947040?includeListDetails=true"
+        },
+        "similarItemsPageDeepLink": "storytel://inspirational-page/explore/similar-items/947040",
+        "analytics": {
+            "id": "book-details-947040"
+        },
+        "showCobranding": false,
+        "userNotices": [],
+        "type": "detailedBook",
+        "_download_url_isbn": "9789179235802"
+    },
+    "Zona muerta (Washington Poe 4)": {
+        "title": "Zona muerta (Washington Poe 4)",
+        "authors": [
+            "M.W. Craven",
+            {
+                "id": "191758",
+                "name": "M.W. Craven",
+                "deepLink": "storytel://vertical-list/explore/lists/authors/191758"
+            }
+        ],
+        "narrators": [
+            "Aleix Peña",
+            {
+                "id": "613666",
+                "name": "Aleix Peña",
+                "deepLink": "storytel://vertical-list/explore/lists/narrators/613666"
+            }
+        ],
+        "genres": [
+            "Audiobook",
+            "Crime"
+        ],
+        "scrape_url": "https://storytel.com/books/zona-muerta-washington-poe-4-2402850",
+        "series": "Washington Poe",
+        "series_order": 4,
+        "language": "spa",
+        "description": "La fascinante y nueva entrega de la serie protagonizada por Washington Poe.\n\nEl sargento Washington Poe está en la corte, luchando contra el desalojo de su amada y aislada granja, cuando lo citan a un burdel callejero en Carlisle, donde un hombre ha sido asesinado a golpes con un bate de béisbol. Todo hace indicar que es un simple asesinato por parte de un proxeneta, pero su asistencia fue solicitada personalmente, por el tipo de personas que prefieren permanecer en las sombras.\n\nA medida que Poe y su inseparable compañera Tilly Bradshaw profundizan en el caso, se enfrentan a preguntas aparentemente sin respuesta: a pesar de haber sido examinados exhaustivamente para un trabajo de alto perfil, ¿por qué no se verifica nada en los antecedentes de la víctima? ¿Por qué se dejó un pequeño adorno en la escena del crimen y por qué alguien del equipo de investigación lo robó? ¿Y cuál es la conexión con un atraco a un banco perfectamente ejecutado tres años antes, un atraco en el que no se llevaron absolutamente nada?\n\nM. W. Craven nació en Carlisle pero creció en Newcastle donde se unió al ejército con tan solo dieciséis años de edad. Pasó los siguientes diez años viajando por el mundo. En 1995 estudió una maestría en trabajo social especializada en criminología. Ahora se decía en exclusiva a la escritura. Actualmente está casado y vive en Carlisle con su esposa. El show de las marionetas, Verano negro, El procurador y Zona muerta son las cuatro novelas protagonizadas por Washington Poe ya publicadas en España.",
+        "isbn": "9788728347775",
+        "publisher": "SAGA Egmont",
+        "release_date": "2023-04-04",
+        "idDownload": "17-W1cu3EuBZUaNHtjNibEIpzRHsB3wNX",
+        "deepLink": "storytel://book-details-page/book-details/consumables/2402850",
+        "shareUrl": "https://www.storytel.com/books/4262581?appRedirect=true",
+        "kidsBook": false,
+        "autoPlay": false,
+        "formats": [
+            {
+                "type": "abook",
+                "durationInMilliseconds": 45011000,
+                "chapters": [
+                    {
+                        "number": 1,
+                        "durationInSeconds": 35,
+                        "durationInMilliseconds": 34795,
+                        "title": "Capítulo 1"
+                    },
+                    {
+                        "number": 2,
+                        "durationInSeconds": 474,
+                        "durationInMilliseconds": 473861,
+                        "title": "Capítulo 2"
+                    },
+                    {
+                        "number": 3,
+                        "durationInSeconds": 574,
+                        "durationInMilliseconds": 573701,
+                        "title": "Capítulo 3"
+                    },
+                    {
+                        "number": 4,
+                        "durationInSeconds": 586,
+                        "durationInMilliseconds": 586397,
+                        "title": "Capítulo 4"
+                    },
+                    {
+                        "number": 5,
+                        "durationInSeconds": 227,
+                        "durationInMilliseconds": 227030,
+                        "title": "Capítulo 5"
+                    },
+                    {
+                        "number": 6,
+                        "durationInSeconds": 545,
+                        "durationInMilliseconds": 545176,
+                        "title": "Capítulo 6"
+                    },
+                    {
+                        "number": 7,
+                        "durationInSeconds": 300,
+                        "durationInMilliseconds": 300356,
+                        "title": "Capítulo 7"
+                    },
+                    {
+                        "number": 8,
+                        "durationInSeconds": 889,
+                        "durationInMilliseconds": 888790,
+                        "title": "Capítulo 8"
+                    },
+                    {
+                        "number": 9,
+                        "durationInSeconds": 354,
+                        "durationInMilliseconds": 353776,
+                        "title": "Capítulo 9"
+                    },
+                    {
+                        "number": 10,
+                        "durationInSeconds": 165,
+                        "durationInMilliseconds": 165094,
+                        "title": "Capítulo 10"
+                    },
+                    {
+                        "number": 11,
+                        "durationInSeconds": 501,
+                        "durationInMilliseconds": 501002,
+                        "title": "Capítulo 11"
+                    },
+                    {
+                        "number": 12,
+                        "durationInSeconds": 542,
+                        "durationInMilliseconds": 541571,
+                        "title": "Capítulo 12"
+                    },
+                    {
+                        "number": 13,
+                        "durationInSeconds": 432,
+                        "durationInMilliseconds": 432431,
+                        "title": "Capítulo 13"
+                    },
+                    {
+                        "number": 14,
+                        "durationInSeconds": 524,
+                        "durationInMilliseconds": 524095,
+                        "title": "Capítulo 14"
+                    },
+                    {
+                        "number": 15,
+                        "durationInSeconds": 497,
+                        "durationInMilliseconds": 497162,
+                        "title": "Capítulo 15"
+                    },
+                    {
+                        "number": 16,
+                        "durationInSeconds": 706,
+                        "durationInMilliseconds": 705620,
+                        "title": "Capítulo 16"
+                    },
+                    {
+                        "number": 17,
+                        "durationInSeconds": 167,
+                        "durationInMilliseconds": 166766,
+                        "title": "Capítulo 17"
+                    },
+                    {
+                        "number": 18,
+                        "durationInSeconds": 255,
+                        "durationInMilliseconds": 254746,
+                        "title": "Capítulo 18"
+                    },
+                    {
+                        "number": 19,
+                        "durationInSeconds": 400,
+                        "durationInMilliseconds": 399700,
+                        "title": "Capítulo 19"
+                    },
+                    {
+                        "number": 20,
+                        "durationInSeconds": 722,
+                        "durationInMilliseconds": 722312,
+                        "title": "Capítulo 20"
+                    },
+                    {
+                        "number": 21,
+                        "durationInSeconds": 986,
+                        "durationInMilliseconds": 986096,
+                        "title": "Capítulo 21"
+                    },
+                    {
+                        "number": 22,
+                        "durationInSeconds": 473,
+                        "durationInMilliseconds": 472581,
+                        "title": "Capítulo 22"
+                    },
+                    {
+                        "number": 23,
+                        "durationInSeconds": 680,
+                        "durationInMilliseconds": 679602,
+                        "title": "Capítulo 23"
+                    },
+                    {
+                        "number": 24,
+                        "durationInSeconds": 386,
+                        "durationInMilliseconds": 386273,
+                        "title": "Capítulo 24"
+                    },
+                    {
+                        "number": 25,
+                        "durationInSeconds": 533,
+                        "durationInMilliseconds": 533394,
+                        "title": "Capítulo 25"
+                    },
+                    {
+                        "number": 26,
+                        "durationInSeconds": 484,
+                        "durationInMilliseconds": 484153,
+                        "title": "Capítulo 26"
+                    },
+                    {
+                        "number": 27,
+                        "durationInSeconds": 329,
+                        "durationInMilliseconds": 328542,
+                        "title": "Capítulo 27"
+                    },
+                    {
+                        "number": 28,
+                        "durationInSeconds": 473,
+                        "durationInMilliseconds": 473130,
+                        "title": "Capítulo 28"
+                    },
+                    {
+                        "number": 29,
+                        "durationInSeconds": 320,
+                        "durationInMilliseconds": 320287,
+                        "title": "Capítulo 29"
+                    },
+                    {
+                        "number": 30,
+                        "durationInSeconds": 404,
+                        "durationInMilliseconds": 404114,
+                        "title": "Capítulo 30"
+                    },
+                    {
+                        "number": 31,
+                        "durationInSeconds": 156,
+                        "durationInMilliseconds": 155638,
+                        "title": "Capítulo 31"
+                    },
+                    {
+                        "number": 32,
+                        "durationInSeconds": 999,
+                        "durationInMilliseconds": 998922,
+                        "title": "Capítulo 32"
+                    },
+                    {
+                        "number": 33,
+                        "durationInSeconds": 172,
+                        "durationInMilliseconds": 172173,
+                        "title": "Capítulo 33"
+                    },
+                    {
+                        "number": 34,
+                        "durationInSeconds": 230,
+                        "durationInMilliseconds": 230191,
+                        "title": "Capítulo 34"
+                    },
+                    {
+                        "number": 35,
+                        "durationInSeconds": 240,
+                        "durationInMilliseconds": 239647,
+                        "title": "Capítulo 35"
+                    },
+                    {
+                        "number": 36,
+                        "durationInSeconds": 189,
+                        "durationInMilliseconds": 188630,
+                        "title": "Capítulo 36"
+                    },
+                    {
+                        "number": 37,
+                        "durationInSeconds": 206,
+                        "durationInMilliseconds": 205714,
+                        "title": "Capítulo 37"
+                    },
+                    {
+                        "number": 38,
+                        "durationInSeconds": 267,
+                        "durationInMilliseconds": 266553,
+                        "title": "Capítulo 38"
+                    },
+                    {
+                        "number": 39,
+                        "durationInSeconds": 478,
+                        "durationInMilliseconds": 478224,
+                        "title": "Capítulo 39"
+                    },
+                    {
+                        "number": 40,
+                        "durationInSeconds": 327,
+                        "durationInMilliseconds": 327105,
+                        "title": "Capítulo 40"
+                    },
+                    {
+                        "number": 41,
+                        "durationInSeconds": 320,
+                        "durationInMilliseconds": 319582,
+                        "title": "Capítulo 41"
+                    },
+                    {
+                        "number": 42,
+                        "durationInSeconds": 334,
+                        "durationInMilliseconds": 333714,
+                        "title": "Capítulo 42"
+                    },
+                    {
+                        "number": 43,
+                        "durationInSeconds": 734,
+                        "durationInMilliseconds": 733858,
+                        "title": "Capítulo 43"
+                    },
+                    {
+                        "number": 44,
+                        "durationInSeconds": 414,
+                        "durationInMilliseconds": 414302,
+                        "title": "Capítulo 44"
+                    },
+                    {
+                        "number": 45,
+                        "durationInSeconds": 492,
+                        "durationInMilliseconds": 491807,
+                        "title": "Capítulo 45"
+                    },
+                    {
+                        "number": 46,
+                        "durationInSeconds": 289,
+                        "durationInMilliseconds": 289202,
+                        "title": "Capítulo 46"
+                    },
+                    {
+                        "number": 47,
+                        "durationInSeconds": 236,
+                        "durationInMilliseconds": 236173,
+                        "title": "Capítulo 47"
+                    },
+                    {
+                        "number": 48,
+                        "durationInSeconds": 319,
+                        "durationInMilliseconds": 318589,
+                        "title": "Capítulo 48"
+                    },
+                    {
+                        "number": 49,
+                        "durationInSeconds": 403,
+                        "durationInMilliseconds": 403122,
+                        "title": "Capítulo 49"
+                    },
+                    {
+                        "number": 50,
+                        "durationInSeconds": 516,
+                        "durationInMilliseconds": 515683,
+                        "title": "Capítulo 50"
+                    },
+                    {
+                        "number": 51,
+                        "durationInSeconds": 195,
+                        "durationInMilliseconds": 195082,
+                        "title": "Capítulo 51"
+                    },
+                    {
+                        "number": 52,
+                        "durationInSeconds": 369,
+                        "durationInMilliseconds": 368953,
+                        "title": "Capítulo 52"
+                    },
+                    {
+                        "number": 53,
+                        "durationInSeconds": 518,
+                        "durationInMilliseconds": 517878,
+                        "title": "Capítulo 53"
+                    },
+                    {
+                        "number": 54,
+                        "durationInSeconds": 184,
+                        "durationInMilliseconds": 183562,
+                        "title": "Capítulo 54"
+                    },
+                    {
+                        "number": 55,
+                        "durationInSeconds": 275,
+                        "durationInMilliseconds": 274521,
+                        "title": "Capítulo 55"
+                    },
+                    {
+                        "number": 56,
+                        "durationInSeconds": 434,
+                        "durationInMilliseconds": 434233,
+                        "title": "Capítulo 56"
+                    },
+                    {
+                        "number": 57,
+                        "durationInSeconds": 317,
+                        "durationInMilliseconds": 316996,
+                        "title": "Capítulo 57"
+                    },
+                    {
+                        "number": 58,
+                        "durationInSeconds": 587,
+                        "durationInMilliseconds": 587468,
+                        "title": "Capítulo 58"
+                    },
+                    {
+                        "number": 59,
+                        "durationInSeconds": 1004,
+                        "durationInMilliseconds": 1004434,
+                        "title": "Capítulo 59"
+                    },
+                    {
+                        "number": 60,
+                        "durationInSeconds": 214,
+                        "durationInMilliseconds": 214256,
+                        "title": "Capítulo 60"
+                    },
+                    {
+                        "number": 61,
+                        "durationInSeconds": 333,
+                        "durationInMilliseconds": 333035,
+                        "title": "Capítulo 61"
+                    },
+                    {
+                        "number": 62,
+                        "durationInSeconds": 197,
+                        "durationInMilliseconds": 196963,
+                        "title": "Capítulo 62"
+                    },
+                    {
+                        "number": 63,
+                        "durationInSeconds": 262,
+                        "durationInMilliseconds": 261825,
+                        "title": "Capítulo 63"
+                    },
+                    {
+                        "number": 64,
+                        "durationInSeconds": 448,
+                        "durationInMilliseconds": 448340,
+                        "title": "Capítulo 64"
+                    },
+                    {
+                        "number": 65,
+                        "durationInSeconds": 329,
+                        "durationInMilliseconds": 329430,
+                        "title": "Capítulo 65"
+                    },
+                    {
+                        "number": 66,
+                        "durationInSeconds": 512,
+                        "durationInMilliseconds": 512261,
+                        "title": "Capítulo 66"
+                    },
+                    {
+                        "number": 67,
+                        "durationInSeconds": 186,
+                        "durationInMilliseconds": 185783,
+                        "title": "Capítulo 67"
+                    },
+                    {
+                        "number": 68,
+                        "durationInSeconds": 280,
+                        "durationInMilliseconds": 280451,
+                        "title": "Capítulo 68"
+                    },
+                    {
+                        "number": 69,
+                        "durationInSeconds": 256,
+                        "durationInMilliseconds": 255608,
+                        "title": "Capítulo 69"
+                    },
+                    {
+                        "number": 70,
+                        "durationInSeconds": 379,
+                        "durationInMilliseconds": 378958,
+                        "title": "Capítulo 70"
+                    },
+                    {
+                        "number": 71,
+                        "durationInSeconds": 326,
+                        "durationInMilliseconds": 325878,
+                        "title": "Capítulo 71"
+                    },
+                    {
+                        "number": 72,
+                        "durationInSeconds": 627,
+                        "durationInMilliseconds": 627461,
+                        "title": "Capítulo 72"
+                    },
+                    {
+                        "number": 73,
+                        "durationInSeconds": 473,
+                        "durationInMilliseconds": 472529,
+                        "title": "Capítulo 73"
+                    },
+                    {
+                        "number": 74,
+                        "durationInSeconds": 327,
+                        "durationInMilliseconds": 327184,
+                        "title": "Capítulo 74"
+                    },
+                    {
+                        "number": 75,
+                        "durationInSeconds": 244,
+                        "durationInMilliseconds": 244323,
+                        "title": "Capítulo 75"
+                    },
+                    {
+                        "number": 76,
+                        "durationInSeconds": 303,
+                        "durationInMilliseconds": 303073,
+                        "title": "Capítulo 76"
+                    },
+                    {
+                        "number": 77,
+                        "durationInSeconds": 434,
+                        "durationInMilliseconds": 434103,
+                        "title": "Capítulo 77"
+                    },
+                    {
+                        "number": 78,
+                        "durationInSeconds": 289,
+                        "durationInMilliseconds": 289019,
+                        "title": "Capítulo 78"
+                    },
+                    {
+                        "number": 79,
+                        "durationInSeconds": 444,
+                        "durationInMilliseconds": 444212,
+                        "title": "Capítulo 79"
+                    },
+                    {
+                        "number": 80,
+                        "durationInSeconds": 273,
+                        "durationInMilliseconds": 272797,
+                        "title": "Capítulo 80"
+                    },
+                    {
+                        "number": 81,
+                        "durationInSeconds": 242,
+                        "durationInMilliseconds": 241946,
+                        "title": "Capítulo 81"
+                    },
+                    {
+                        "number": 82,
+                        "durationInSeconds": 151,
+                        "durationInMilliseconds": 150544,
+                        "title": "Capítulo 82"
+                    },
+                    {
+                        "number": 83,
+                        "durationInSeconds": 219,
+                        "durationInMilliseconds": 219089,
+                        "title": "Capítulo 83"
+                    },
+                    {
+                        "number": 84,
+                        "durationInSeconds": 369,
+                        "durationInMilliseconds": 369450,
+                        "title": "Capítulo 84"
+                    },
+                    {
+                        "number": 85,
+                        "durationInSeconds": 443,
+                        "durationInMilliseconds": 442567,
+                        "title": "Capítulo 85"
+                    },
+                    {
+                        "number": 86,
+                        "durationInSeconds": 354,
+                        "durationInMilliseconds": 353724,
+                        "title": "Capítulo 86"
+                    },
+                    {
+                        "number": 87,
+                        "durationInSeconds": 403,
+                        "durationInMilliseconds": 402730,
+                        "title": "Capítulo 87"
+                    },
+                    {
+                        "number": 88,
+                        "durationInSeconds": 309,
+                        "durationInMilliseconds": 308846,
+                        "title": "Capítulo 88"
+                    },
+                    {
+                        "number": 89,
+                        "durationInSeconds": 226,
+                        "durationInMilliseconds": 225646,
+                        "title": "Capítulo 89"
+                    },
+                    {
+                        "number": 90,
+                        "durationInSeconds": 224,
+                        "durationInMilliseconds": 224392,
+                        "title": "Capítulo 90"
+                    },
+                    {
+                        "number": 91,
+                        "durationInSeconds": 263,
+                        "durationInMilliseconds": 262557,
+                        "title": "Capítulo 91"
+                    },
+                    {
+                        "number": 92,
+                        "durationInSeconds": 285,
+                        "durationInMilliseconds": 285388,
+                        "title": "Capítulo 92"
+                    },
+                    {
+                        "number": 93,
+                        "durationInSeconds": 337,
+                        "durationInMilliseconds": 336953,
+                        "title": "Capítulo 93"
+                    },
+                    {
+                        "number": 94,
+                        "durationInSeconds": 741,
+                        "durationInMilliseconds": 741042,
+                        "title": "Capítulo 94"
+                    },
+                    {
+                        "number": 95,
+                        "durationInSeconds": 703,
+                        "durationInMilliseconds": 702720,
+                        "title": "Capítulo 95"
+                    },
+                    {
+                        "number": 96,
+                        "durationInSeconds": 638,
+                        "durationInMilliseconds": 638093,
+                        "title": "Capítulo 96"
+                    },
+                    {
+                        "number": 97,
+                        "durationInSeconds": 152,
+                        "durationInMilliseconds": 151562,
+                        "title": "Capítulo 97"
+                    },
+                    {
+                        "number": 98,
+                        "durationInSeconds": 203,
+                        "durationInMilliseconds": 203311,
+                        "title": "Capítulo 98"
+                    },
+                    {
+                        "number": 99,
+                        "durationInSeconds": 298,
+                        "durationInMilliseconds": 297770,
+                        "title": "Capítulo 99"
+                    },
+                    {
+                        "number": 100,
+                        "durationInSeconds": 700,
+                        "durationInMilliseconds": 699925,
+                        "title": "Capítulo 100"
+                    },
+                    {
+                        "number": 101,
+                        "durationInSeconds": 265,
+                        "durationInMilliseconds": 265091,
+                        "title": "Capítulo 101"
+                    },
+                    {
+                        "number": 102,
+                        "durationInSeconds": 271,
+                        "durationInMilliseconds": 270811,
+                        "title": "Capítulo 102"
+                    },
+                    {
+                        "number": 103,
+                        "durationInSeconds": 453,
+                        "durationInMilliseconds": 453486,
+                        "title": "Capítulo 103"
+                    },
+                    {
+                        "number": 104,
+                        "durationInSeconds": 472,
+                        "durationInMilliseconds": 472242,
+                        "title": "Capítulo 104"
+                    },
+                    {
+                        "number": 105,
+                        "durationInSeconds": 262,
+                        "durationInMilliseconds": 262322,
+                        "title": "Capítulo 105"
+                    },
+                    {
+                        "number": 106,
+                        "durationInSeconds": 197,
+                        "durationInMilliseconds": 196807,
+                        "title": "Capítulo 106"
+                    },
+                    {
+                        "number": 107,
+                        "durationInSeconds": 287,
+                        "durationInMilliseconds": 287216,
+                        "title": "Capítulo 107"
+                    },
+                    {
+                        "number": 108,
+                        "durationInSeconds": 1185,
+                        "durationInMilliseconds": 1184784,
+                        "title": "Capítulo 108"
+                    },
+                    {
+                        "number": 109,
+                        "durationInSeconds": 576,
+                        "durationInMilliseconds": 575687,
+                        "title": "Capítulo 109"
+                    },
+                    {
+                        "number": 110,
+                        "durationInSeconds": 517,
+                        "durationInMilliseconds": 516937,
+                        "title": "Capítulo 110"
+                    },
+                    {
+                        "number": 111,
+                        "durationInSeconds": 121,
+                        "durationInMilliseconds": 121078,
+                        "title": "Capítulo 111"
+                    },
+                    {
+                        "number": 112,
+                        "durationInSeconds": 263,
+                        "durationInMilliseconds": 262922,
+                        "title": "Capítulo 112"
+                    },
+                    {
+                        "number": 113,
+                        "durationInSeconds": 540,
+                        "durationInMilliseconds": 540082,
+                        "title": "Capítulo 113"
+                    },
+                    {
+                        "number": 114,
+                        "durationInSeconds": 41,
+                        "durationInMilliseconds": 41378,
+                        "title": "Capítulo 114"
+                    }
+                ],
+                "cover": {
+                    "url": "https://covers.storytel.com/jpg-640/9788728347775.ca8163a1-4f52-4cd5-90a8-a8a4bde4af30?optimize=high",
+                    "width": 640,
+                    "height": 640
+                },
+                "takedownDate": null
+            },
+            {
+                "id": "2401569",
+                "type": "abook",
+                "releaseDate": "2023-04-04T00:00:00Z",
+                "availabilityInfo": [
+                    {
+                        "isReleased": true,
+                        "releaseDate": "2023-04-04T00:00:00Z",
+                        "type": "subscription"
+                    }
+                ],
+                "isGeoRestricted": false,
+                "isReleased": true,
+                "publisher": {
+                    "name": "SAGA Egmont"
+                },
+                "isLockedContent": false
+            }
+        ],
+        "consumableId": "2402850",
+        "bookId": 4262581,
+        "originalTitle": "",
+        "isAbridged": false,
+        "audiobookSampleUrl": "https://audio-previews.storytel.net/assets/consumables/2402850/abook/preview",
+        "trailerData": null,
+        "ratings": {
+            "averageRating": 4.26,
+            "numberOfRatings": 84
+        },
+        "cover": {
+            "url": "https://covers.storytel.com/jpg-640/9788728347775.ca8163a1-4f52-4cd5-90a8-a8a4bde4af30?optimize=high",
+            "width": 640,
+            "height": 640
+        },
+        "category": {
+            "name": "Crime",
+            "deepLink": null
+        },
+        "translators": [
+            {
+                "id": "122645",
+                "name": "Ana Momplet Chico",
+                "deepLink": ""
+            }
+        ],
+        "seriesInfo": {
+            "id": "96295",
+            "name": "Washington Poe",
+            "orderInSeries": 4,
+            "deepLink": "storytel://vertical-list/explore/lists/series/96295"
+        },
+        "duration": {
+            "hours": 12,
+            "minutes": 30,
+            "seconds": 11
+        },
+        "similarBooksContentBlock": {
+            "displayType": "horizontalList",
+            "title": "Similar titles",
+            "id": "similar-books-2402850",
+            "subtitle": null,
+            "itemsUrl": "https://api.storytel.net/explore/lists/similar-books/2402850?includeListDetails=false",
+            "deepLink": "storytel://vertical-list/explore/lists/similar-books/2402850?includeListDetails=true"
+        },
+        "similarItemsPageDeepLink": "storytel://inspirational-page/explore/similar-items/2402850",
+        "analytics": {
+            "id": "book-details-2402850"
+        },
+        "showCobranding": false,
+        "userNotices": [],
+        "type": "detailedBook",
+        "_download_url_isbn": "9788728347775"
+    }
+}
