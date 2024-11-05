@@ -55,3 +55,15 @@ export interface Audiobook {
 export interface AudiobookData {
   [key: string]: Audiobook;
 }
+
+export interface PlaybackState {
+  bookId: string;
+  chapter: number;
+  timestamp: number;
+  lastPlayed: number;
+}
+
+export interface SearchFilters {
+  query: string;
+  type: 'all' | 'title' | 'author' | 'narrator' | 'genre';
+}
