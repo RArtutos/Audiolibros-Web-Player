@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Clock, Moon } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Clock, Moon, AlertCircle } from 'lucide-react';
 import { Format } from '../types/audiobook';
 
 interface AudioPlayerProps {
@@ -18,6 +18,8 @@ const SLEEP_TIMER_OPTIONS = [
   { label: '45 minutos', value: 45 },
   { label: '60 minutos', value: 60 }
 ];
+const MAX_RETRIES = 10;
+const RETRY_DELAY = 1000; // 1 second
 
 export default function AudioPlayer({
   audioUrl,
@@ -35,6 +37,8 @@ export default function AudioPlayer({
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [sleepTimer, setSleepTimer] = useState<number | null>(null);
   const [sleepTimerEnd, setSleepTimerEnd] = useState<number | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [loadError, setLoadError] = useState(false);
 
   const totalDuration = format.chapters.reduce((acc, chapter) => acc + chapter.durationInSeconds, 0);
   const previousChaptersDuration = format.chapters
@@ -52,16 +56,36 @@ export default function AudioPlayer({
       onTimeUpdate?.(audio.currentTime);
     };
     
-    const updateDuration = () => setDuration(audio.duration);
+    const updateDuration = () => {
+      setDuration(audio.duration);
+      setLoadError(false);
+      setRetryCount(0);
+    };
+
+    const handleError = () => {
+      if (retryCount < MAX_RETRIES) {
+        setTimeout(() => {
+          setRetryCount(prev => prev + 1);
+          audio.load();
+          if (isPlaying) {
+            audio.play().catch(() => {});
+          }
+        }, RETRY_DELAY);
+      } else {
+        setLoadError(true);
+      }
+    };
     
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('error', handleError);
     
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('error', handleError);
     };
-  }, [onTimeUpdate]);
+  }, [onTimeUpdate, retryCount, isPlaying]);
 
   useEffect(() => {
     if (audioRef.current && format.chapters[currentChapter]) {
@@ -93,7 +117,14 @@ export default function AudioPlayer({
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play();
+      audioRef.current.play().catch(() => {
+        if (retryCount < MAX_RETRIES) {
+          setRetryCount(prev => prev + 1);
+          audioRef.current?.load();
+        } else {
+          setLoadError(true);
+        }
+      });
     }
     setIsPlaying(!isPlaying);
   };
@@ -143,6 +174,17 @@ export default function AudioPlayer({
     }
   };
 
+  const handleRetry = () => {
+    setLoadError(false);
+    setRetryCount(0);
+    if (audioRef.current) {
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play().catch(() => {});
+      }
+    }
+  };
+
   const formatTime = (time: number) => {
     const hours = Math.floor(time / 3600);
     const minutes = Math.floor((time % 3600) / 60);
@@ -167,6 +209,26 @@ export default function AudioPlayer({
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-surface shadow-lg border-t border-border">
       <div className="max-w-7xl mx-auto px-4 py-4">
+        {loadError && (
+          <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-red-500/10 text-red-500 rounded-lg">
+            <AlertCircle className="w-5 h-5" />
+            <span>Error al cargar el audio.</span>
+            <button
+              onClick={handleRetry}
+              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+            >
+              Reintentar
+            </button>
+          </div>
+        )}
+
+        {retryCount > 0 && !loadError && (
+          <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-yellow-500/10 text-yellow-500 rounded-lg">
+            <AlertCircle className="w-5 h-5" />
+            <span>Reintentando cargar el audio... (Intento {retryCount} de {MAX_RETRIES})</span>
+          </div>
+        )}
+
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between text-sm text-textSecondary mb-2">
             <div className="hidden sm:block">
