@@ -45,7 +45,7 @@ export default function AudioPlayer({
     .slice(0, currentChapter)
     .reduce((acc, chapter) => acc + chapter.durationInSeconds, 0);
   const overallProgress = ((previousChaptersDuration + currentTime) / totalDuration) * 100;
-  const remainingTime = totalDuration - (previousChaptersDuration + currentTime);
+  const remainingTime = (totalDuration - (previousChaptersDuration + currentTime)) / playbackSpeed;
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -235,7 +235,7 @@ export default function AudioPlayer({
               Progreso total: {Math.round(overallProgress)}%
             </div>
             <div>
-              Tiempo restante: {formatTime(remainingTime)}
+              Tiempo restante: {formatTime(remainingTime)} ({playbackSpeed}x)
             </div>
           </div>
 
