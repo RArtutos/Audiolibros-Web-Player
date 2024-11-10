@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Library, Search, Sun, Moon, Sunset } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { SearchFilters } from '../types/audiobook';
@@ -6,6 +6,7 @@ import AudiobookCard from '../components/AudiobookCard';
 import { useAudiobooks } from '../hooks/useAudiobooks';
 import { useRecentBooks } from '../hooks/useRecentBooks';
 import { useTheme } from '../hooks/useTheme';
+import { debounce } from '../utils/search';
 
 export default function AudiobookList() {
   const navigate = useNavigate();
@@ -21,32 +22,34 @@ export default function AudiobookList() {
   
   const { audiobooks, loading, error, totalPages } = useAudiobooks(searchFilters, currentPage);
 
+  // Debounced search
+  const debouncedSearch = useCallback(
+    debounce((value: string) => {
+      setSearchFilters(prev => ({ ...prev, query: value }));
+      setCurrentPage(1);
+    }, 300),
+    []
+  );
+
   useEffect(() => {
     if (location.state?.search && location.state?.type) {
-      setSearchInput(location.state.search);
-      setSearchFilters({
-        query: location.state.search,
-        type: location.state.type
-      });
+      const { search, type } = location.state;
+      setSearchInput(search);
+      setSearchFilters({ query: search, type });
       setCurrentPage(1);
       navigate(location.pathname, { replace: true });
     }
   }, [location.state, navigate]);
 
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchInput(value);
+    debouncedSearch(value);
+  };
+
   const handleFilterChange = (type: SearchFilters['type']) => {
     setSearchFilters(prev => ({ ...prev, type }));
     setCurrentPage(1);
-  };
-
-  const handleSearch = () => {
-    setSearchFilters(prev => ({ ...prev, query: searchInput }));
-    setCurrentPage(1);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch();
-    }
   };
 
   if (loading) {
@@ -125,19 +128,14 @@ export default function AudiobookList() {
                   <input
                     type="text"
                     value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
+                    onChange={handleSearchInputChange}
                     placeholder="Buscar audiolibros..."
                     className="block w-full pl-4 pr-4 py-3 border border-border bg-background rounded-xl text-text placeholder-textSecondary focus:outline-none focus:ring-2 focus:ring-accent transition-all"
                   />
                 </div>
-                <button
-                  onClick={handleSearch}
-                  className="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl hover:opacity-90 transition-opacity flex items-center gap-2"
-                >
+                <div className="p-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl">
                   <Search className="w-5 h-5" />
-                  <span>Buscar</span>
-                </button>
+                </div>
               </div>
 
               <div className="flex gap-2 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0">
