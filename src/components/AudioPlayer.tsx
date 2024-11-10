@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Play, Pause, SkipBack, SkipForward, Volume2, Moon, AlertCircle } from 'lucide-react';
 import { Format } from '../types/audiobook';
-import { useAudioPlayer } from '../hooks/useAudioPlayer';
 
 interface AudioPlayerProps {
   audioUrl: string;
@@ -28,25 +27,199 @@ export default function AudioPlayer({
   onChapterChange,
   onTimeUpdate
 }: AudioPlayerProps) {
-  const {
-    isPlaying,
-    currentTime,
-    duration,
-    volume,
-    playbackSpeed,
-    sleepTimer,
-    sleepTimerEnd,
-    loadError,
-    retryCount,
-    hasChapters,
-    totalDuration,
-    togglePlayPause,
-    handleProgressChange,
-    handleVolumeChange,
-    handleSpeedChange,
-    handleSleepTimer,
-    retry
-  } = useAudioPlayer(audioUrl, format, currentChapter, onChapterChange, onTimeUpdate);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [sleepTimer, setSleepTimer] = useState<number | null>(null);
+  const [sleepTimerEnd, setSleepTimerEnd] = useState<number | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
+
+  const hasChapters = format.chapters && format.chapters.length > 0;
+  const totalDuration = format.durationInMilliseconds / 1000;
+
+  useEffect(() => {
+    const audio = new Audio();
+    audioRef.current = audio;
+    audio.crossOrigin = "anonymous";
+    audio.preload = "auto";
+
+    // Set initial properties
+    audio.volume = volume;
+    audio.playbackRate = playbackSpeed;
+
+    // Event listeners
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+      onTimeUpdate?.(audio.currentTime);
+    };
+
+    const updateDuration = () => {
+      setDuration(audio.duration);
+      setLoadError(false);
+      setRetryCount(0);
+    };
+
+    const handleError = async () => {
+      console.error('Audio error:', audio.error);
+      if (retryCount < 3) {
+        try {
+          // Fetch the audio URL first to handle redirects
+          const response = await fetch(audioUrl);
+          if (!response.ok) throw new Error('Failed to fetch audio');
+          
+          const finalUrl = response.url;
+          audio.src = finalUrl;
+          await audio.load();
+          
+          if (isPlaying) {
+            await audio.play();
+          }
+          
+          setRetryCount(prev => prev + 1);
+        } catch (err) {
+          console.error('Retry failed:', err);
+          setLoadError(true);
+        }
+      } else {
+        setLoadError(true);
+      }
+    };
+
+    const handleEnded = () => {
+      if (hasChapters && currentChapter < format.chapters.length - 1) {
+        onChapterChange(currentChapter + 1);
+      } else {
+        setIsPlaying(false);
+      }
+    };
+
+    audio.addEventListener('timeupdate', updateTime);
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('error', handleError);
+    audio.addEventListener('ended', handleEnded);
+
+    // Set initial source
+    audio.src = audioUrl;
+    audio.load();
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateTime);
+      audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('error', handleError);
+      audio.removeEventListener('ended', handleEnded);
+      audio.pause();
+      audio.src = '';
+    };
+  }, [audioUrl]);
+
+  useEffect(() => {
+    if (hasChapters && audioRef.current && format.chapters[currentChapter]) {
+      const previousChaptersDuration = format.chapters
+        .slice(0, currentChapter)
+        .reduce((acc, chapter) => acc + chapter.durationInSeconds, 0);
+      audioRef.current.currentTime = previousChaptersDuration;
+    }
+  }, [currentChapter, format.chapters, hasChapters]);
+
+  useEffect(() => {
+    if (sleepTimer && sleepTimerEnd) {
+      const timeout = setTimeout(() => {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          setIsPlaying(false);
+        }
+        setSleepTimer(null);
+        setSleepTimerEnd(null);
+      }, sleepTimerEnd - Date.now());
+
+      return () => clearTimeout(timeout);
+    }
+  }, [sleepTimer, sleepTimerEnd]);
+
+  const togglePlayPause = async () => {
+    if (!audioRef.current) return;
+
+    try {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        // Ensure we have the latest audio URL
+        const response = await fetch(audioUrl);
+        if (!response.ok) throw new Error('Failed to fetch audio');
+        
+        const finalUrl = response.url;
+        if (audioRef.current.src !== finalUrl) {
+          audioRef.current.src = finalUrl;
+          await audioRef.current.load();
+        }
+        
+        await audioRef.current.play();
+        setIsPlaying(true);
+      }
+    } catch (error) {
+      console.error('Playback error:', error);
+      setLoadError(true);
+    }
+  };
+
+  const handleProgressChange = (time: number) => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setCurrentTime(time);
+    }
+  };
+
+  const handleVolumeChange = (newVolume: number) => {
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+      setVolume(newVolume);
+    }
+  };
+
+  const handleSpeedChange = (speed: number) => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = speed;
+      setPlaybackSpeed(speed);
+    }
+  };
+
+  const handleSleepTimer = (minutes: number) => {
+    if (sleepTimer === minutes) {
+      setSleepTimer(null);
+      setSleepTimerEnd(null);
+    } else {
+      setSleepTimer(minutes);
+      setSleepTimerEnd(Date.now() + minutes * 60 * 1000);
+    }
+  };
+
+  const retry = async () => {
+    if (!audioRef.current) return;
+    
+    try {
+      setLoadError(false);
+      setRetryCount(0);
+      
+      const response = await fetch(audioUrl);
+      if (!response.ok) throw new Error('Failed to fetch audio');
+      
+      const finalUrl = response.url;
+      audioRef.current.src = finalUrl;
+      await audioRef.current.load();
+      
+      if (isPlaying) {
+        await audioRef.current.play();
+      }
+    } catch (error) {
+      console.error('Retry failed:', error);
+      setLoadError(true);
+    }
+  };
 
   let overallProgress;
   let remainingTime;
@@ -102,7 +275,7 @@ export default function AudioPlayer({
         {retryCount > 0 && !loadError && (
           <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-yellow-500/10 text-yellow-500 rounded-lg">
             <AlertCircle className="w-5 h-5" />
-            <span>Reintentando cargar el audio... (Intento {retryCount} de 10)</span>
+            <span>Reintentando cargar el audio... (Intento {retryCount} de 3)</span>
           </div>
         )}
 
