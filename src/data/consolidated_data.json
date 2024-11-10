@@ -1,0 +1,514 @@
+{
+    "#MásGordoElAmor": {
+        "title": "#MásGordoElAmor",
+        "authors": [
+            "Antonio Malpica",
+            {
+                "id": "57764",
+                "name": "Antonio Malpica",
+                "deepLink": "storytel://vertical-list/explore/lists/authors/57764"
+            }
+        ],
+        "narrators": [
+            "Mathias Rapisarda",
+            {
+                "id": "104880",
+                "name": "Mathias Rapisarda",
+                "deepLink": "storytel://vertical-list/explore/lists/narrators/104880"
+            }
+        ],
+        "genres": [
+            "Audiobook",
+            "Teens & Young Adult"
+        ],
+        "scrape_url": "https://storytel.com/books/másgordoelamor-164891",
+        "language": "spa",
+        "description": "Tras el éxito alcanzado por la saga El libro de los Héroes (formada por Siete esqueletos decapitados, Nocturno Belfegor y El legado de la estirpe), Antonio Malpica deja atrás el suspenso y el terror para ofrecernos una novela que redefine el término romanticismo. Es una historia moderna y vital en la que cabe lo mismo el humor y el melodrama. El libro se encuentra dirigido principalmente a los jóvenes, pero atrapará también a los lectores adultos. El protagonista es Simon, quien al llegar a la edad adulta y después de un suceso que transforma radicalmente su vida y sus convicciones más arraigadas, decide ajustar cuentas con su pasado. Así, en compañía de su mejor amigo, El Pollo, emprende una búsqueda quijotesca llena de paradojas y sucesos inesperados.",
+        "isbn": "9789178078653",
+        "publisher": "Storyside",
+        "release_date": "2018-08-14",
+        "njsonArchivo": "m%C3%A1sgordoelamor-164891.mp3.json",
+        "deepLink": "storytel://book-details-page/book-details/consumables/164891",
+        "shareUrl": "https://www.storytel.com/books/139232?appRedirect=true",
+        "kidsBook": false,
+        "autoPlay": false,
+        "formats": [
+            {
+                "type": "abook",
+                "durationInMilliseconds": 37830000,
+                "chapters": [
+                    {
+                        "number": 1,
+                        "durationInSeconds": 1045,
+                        "durationInMilliseconds": 1045000,
+                        "title": null
+                    },
+                    {
+                        "number": 2,
+                        "durationInSeconds": 948,
+                        "durationInMilliseconds": 948000,
+                        "title": null
+                    },
+                    {
+                        "number": 3,
+                        "durationInSeconds": 1025,
+                        "durationInMilliseconds": 1025000,
+                        "title": null
+                    },
+                    {
+                        "number": 4,
+                        "durationInSeconds": 693,
+                        "durationInMilliseconds": 693000,
+                        "title": null
+                    },
+                    {
+                        "number": 5,
+                        "durationInSeconds": 701,
+                        "durationInMilliseconds": 701000,
+                        "title": null
+                    },
+                    {
+                        "number": 6,
+                        "durationInSeconds": 500,
+                        "durationInMilliseconds": 500000,
+                        "title": null
+                    },
+                    {
+                        "number": 7,
+                        "durationInSeconds": 731,
+                        "durationInMilliseconds": 731000,
+                        "title": null
+                    },
+                    {
+                        "number": 8,
+                        "durationInSeconds": 960,
+                        "durationInMilliseconds": 960000,
+                        "title": null
+                    },
+                    {
+                        "number": 9,
+                        "durationInSeconds": 898,
+                        "durationInMilliseconds": 898000,
+                        "title": null
+                    },
+                    {
+                        "number": 10,
+                        "durationInSeconds": 646,
+                        "durationInMilliseconds": 646000,
+                        "title": null
+                    },
+                    {
+                        "number": 11,
+                        "durationInSeconds": 918,
+                        "durationInMilliseconds": 918000,
+                        "title": null
+                    },
+                    {
+                        "number": 12,
+                        "durationInSeconds": 1227,
+                        "durationInMilliseconds": 1227000,
+                        "title": null
+                    },
+                    {
+                        "number": 13,
+                        "durationInSeconds": 663,
+                        "durationInMilliseconds": 663000,
+                        "title": null
+                    },
+                    {
+                        "number": 14,
+                        "durationInSeconds": 492,
+                        "durationInMilliseconds": 492000,
+                        "title": null
+                    },
+                    {
+                        "number": 15,
+                        "durationInSeconds": 881,
+                        "durationInMilliseconds": 881000,
+                        "title": null
+                    },
+                    {
+                        "number": 16,
+                        "durationInSeconds": 745,
+                        "durationInMilliseconds": 745000,
+                        "title": null
+                    },
+                    {
+                        "number": 17,
+                        "durationInSeconds": 1026,
+                        "durationInMilliseconds": 1026000,
+                        "title": null
+                    },
+                    {
+                        "number": 18,
+                        "durationInSeconds": 911,
+                        "durationInMilliseconds": 911000,
+                        "title": null
+                    },
+                    {
+                        "number": 19,
+                        "durationInSeconds": 730,
+                        "durationInMilliseconds": 730000,
+                        "title": null
+                    },
+                    {
+                        "number": 20,
+                        "durationInSeconds": 591,
+                        "durationInMilliseconds": 591000,
+                        "title": null
+                    },
+                    {
+                        "number": 21,
+                        "durationInSeconds": 810,
+                        "durationInMilliseconds": 810000,
+                        "title": null
+                    },
+                    {
+                        "number": 22,
+                        "durationInSeconds": 1005,
+                        "durationInMilliseconds": 1005000,
+                        "title": null
+                    },
+                    {
+                        "number": 23,
+                        "durationInSeconds": 581,
+                        "durationInMilliseconds": 581000,
+                        "title": null
+                    },
+                    {
+                        "number": 24,
+                        "durationInSeconds": 559,
+                        "durationInMilliseconds": 559000,
+                        "title": null
+                    },
+                    {
+                        "number": 25,
+                        "durationInSeconds": 1238,
+                        "durationInMilliseconds": 1238000,
+                        "title": null
+                    },
+                    {
+                        "number": 26,
+                        "durationInSeconds": 894,
+                        "durationInMilliseconds": 894000,
+                        "title": null
+                    },
+                    {
+                        "number": 27,
+                        "durationInSeconds": 810,
+                        "durationInMilliseconds": 810000,
+                        "title": null
+                    },
+                    {
+                        "number": 28,
+                        "durationInSeconds": 232,
+                        "durationInMilliseconds": 232000,
+                        "title": null
+                    },
+                    {
+                        "number": 29,
+                        "durationInSeconds": 977,
+                        "durationInMilliseconds": 977000,
+                        "title": null
+                    },
+                    {
+                        "number": 30,
+                        "durationInSeconds": 605,
+                        "durationInMilliseconds": 605000,
+                        "title": null
+                    },
+                    {
+                        "number": 31,
+                        "durationInSeconds": 673,
+                        "durationInMilliseconds": 673000,
+                        "title": null
+                    },
+                    {
+                        "number": 32,
+                        "durationInSeconds": 806,
+                        "durationInMilliseconds": 806000,
+                        "title": null
+                    },
+                    {
+                        "number": 33,
+                        "durationInSeconds": 610,
+                        "durationInMilliseconds": 610000,
+                        "title": null
+                    },
+                    {
+                        "number": 34,
+                        "durationInSeconds": 643,
+                        "durationInMilliseconds": 643000,
+                        "title": null
+                    },
+                    {
+                        "number": 35,
+                        "durationInSeconds": 1132,
+                        "durationInMilliseconds": 1132000,
+                        "title": null
+                    },
+                    {
+                        "number": 36,
+                        "durationInSeconds": 391,
+                        "durationInMilliseconds": 391000,
+                        "title": null
+                    },
+                    {
+                        "number": 37,
+                        "durationInSeconds": 705,
+                        "durationInMilliseconds": 705000,
+                        "title": null
+                    },
+                    {
+                        "number": 38,
+                        "durationInSeconds": 766,
+                        "durationInMilliseconds": 766000,
+                        "title": null
+                    },
+                    {
+                        "number": 39,
+                        "durationInSeconds": 545,
+                        "durationInMilliseconds": 545000,
+                        "title": null
+                    },
+                    {
+                        "number": 40,
+                        "durationInSeconds": 717,
+                        "durationInMilliseconds": 717000,
+                        "title": null
+                    },
+                    {
+                        "number": 41,
+                        "durationInSeconds": 617,
+                        "durationInMilliseconds": 617000,
+                        "title": null
+                    },
+                    {
+                        "number": 42,
+                        "durationInSeconds": 732,
+                        "durationInMilliseconds": 732000,
+                        "title": null
+                    },
+                    {
+                        "number": 43,
+                        "durationInSeconds": 1104,
+                        "durationInMilliseconds": 1104000,
+                        "title": null
+                    },
+                    {
+                        "number": 44,
+                        "durationInSeconds": 700,
+                        "durationInMilliseconds": 700000,
+                        "title": null
+                    },
+                    {
+                        "number": 45,
+                        "durationInSeconds": 864,
+                        "durationInMilliseconds": 864000,
+                        "title": null
+                    },
+                    {
+                        "number": 46,
+                        "durationInSeconds": 82,
+                        "durationInMilliseconds": 82000,
+                        "title": null
+                    },
+                    {
+                        "number": 47,
+                        "durationInSeconds": 1153,
+                        "durationInMilliseconds": 1153000,
+                        "title": null
+                    },
+                    {
+                        "number": 48,
+                        "durationInSeconds": 1548,
+                        "durationInMilliseconds": 1548000,
+                        "title": null
+                    }
+                ],
+                "cover": {
+                    "url": "https://covers.storytel.com/jpg-640/9789178078653.467a458d-6dd8-479b-ad1d-aa93dc5743af?optimize=high",
+                    "width": 640,
+                    "height": 640
+                },
+                "takedownDate": null
+            },
+            {
+                "id": "164891",
+                "type": "abook",
+                "releaseDate": "2018-08-14T00:00:00Z",
+                "availabilityInfo": [
+                    {
+                        "isReleased": true,
+                        "releaseDate": "2018-08-14T00:00:00Z",
+                        "type": "subscription"
+                    }
+                ],
+                "isGeoRestricted": false,
+                "isReleased": true,
+                "publisher": {
+                    "name": "Storyside"
+                },
+                "isLockedContent": false
+            }
+        ],
+        "consumableId": "164891",
+        "bookId": 139232,
+        "originalTitle": "",
+        "isAbridged": false,
+        "audiobookSampleUrl": "https://audio-previews.storytel.net/assets/consumables/164891/abook/preview",
+        "trailerData": null,
+        "ratings": {
+            "averageRating": 4.08,
+            "numberOfRatings": 104
+        },
+        "cover": {
+            "url": "https://covers.storytel.com/jpg-640/9789178078653.467a458d-6dd8-479b-ad1d-aa93dc5743af?optimize=high",
+            "width": 640,
+            "height": 640
+        },
+        "category": {
+            "name": "Teens & Young Adult",
+            "deepLink": null
+        },
+        "translators": [],
+        "seriesInfo": null,
+        "duration": {
+            "hours": 10,
+            "minutes": 30,
+            "seconds": 30
+        },
+        "similarBooksContentBlock": {
+            "displayType": "horizontalList",
+            "title": "Similar titles",
+            "id": "similar-books-164891",
+            "subtitle": null,
+            "itemsUrl": "https://api.storytel.net/explore/lists/similar-books/164891?includeListDetails=false",
+            "deepLink": "storytel://vertical-list/explore/lists/similar-books/164891?includeListDetails=true"
+        },
+        "similarItemsPageDeepLink": "storytel://inspirational-page/explore/similar-items/164891",
+        "analytics": {
+            "id": "book-details-164891"
+        },
+        "showCobranding": true,
+        "userNotices": [],
+        "type": "detailedBook",
+        "_download_url_isbn": "9789178078653",
+        "idDownload": "1tOvSNsWt1--6T0aqsc91DkqUkCAB_kch"
+    },
+    "#SinFicción15. El caso del descuartizador de Majadahonda. Con Cruz Morcillo": {
+        "title": "#SinFicción15. El caso del descuartizador de Majadahonda. Con Cruz Morcillo",
+        "authors": [
+            "Alrevés Editorial",
+            {
+                "id": "746993",
+                "name": "Alrevés Editorial",
+                "deepLink": "storytel://vertical-list/explore/lists/authors/746993"
+            }
+        ],
+        "narrators": [
+            "Alrevés Editorial",
+            {
+                "id": "746993",
+                "name": "Alrevés Editorial",
+                "deepLink": "storytel://vertical-list/explore/lists/narrators/746993"
+            }
+        ],
+        "genres": [
+            "Audiobook",
+            "Non-Fiction"
+        ],
+        "scrape_url": "https://storytel.com/books/sinficción15-el-caso-del-descuartizador-de-majadahonda-con-cruz-morcillo-2183012",
+        "series": "Sin Ficción",
+        "series_order": 1,
+        "language": "spa",
+        "description": "Dos mujeres desaparecidas con cinco años de diferencia. No se conocen, jamás se han visto. Liria nació en Salamanca; Adriana en Buenos Aires. Solo les unen dos cosas: han vivido en el mismo chalé de Majadahonda (Madrid) en épocas distintas y han conocido a Bruno Hernández Vega.\n\nEste caso lo investiga Cruz Morcillo en el libro \"La hermandad del mal\".\n\nCruz Morcillo (Castellar, 1973) es periodista. Desde 1997 se dedica a contar sucesos e información policial en ABC. Una década después empezó a hacerlo en radio y televisión. Colabora en Cadena Cope y en El Programa de Ana Rosa, entre otros programas de actualidad de Mediaset. Ha recibido premios del Consejo General del Poder Judicial, la Policía Nacional y la Guardia Civil. Le hizo especial ilusión la Cruz al mérito policial con distintivo blanco.\n\nMás información: https://alreveseditorial.com/libros/la-hermandad-del-mal\n#podcastSF\n\n***\nSin Ficción es una colección de libros escritos a ritmo de novela, sin nada de ficción, que narran los episodios más oscuros de la crónica negra, y que está dirigida por la periodista y escritora Marta Robles.\nhttps://alreveseditorial.com\nIG: @alreveseditor / @sinficcion\nTwitter: @AlrevesEditor / @Sin_Ficcion",
+        "isbn": "0402000571427",
+        "publisher": "Alrevés Editorial",
+        "release_date": "2021-12-01",
+        "njsonArchivo": "sinficci%C3%B3n15-el-caso-del-descuartizador-de-majadahonda-con-cruz-morcillo-2183012.mp3.json",
+        "deepLink": "storytel://book-details-page/book-details/consumables/2183012",
+        "shareUrl": "https://www.storytel.com/books/3784920?appRedirect=true",
+        "kidsBook": false,
+        "autoPlay": false,
+        "formats": [
+            {
+                "type": "abook",
+                "durationInMilliseconds": 2930000,
+                "chapters": [],
+                "cover": {
+                    "url": "https://covers.storytel.com/jpg-640/0402000571427.b066e3aa-72a2-4bce-a2b6-3f6397bfa49d?optimize=high",
+                    "width": 640,
+                    "height": 640
+                },
+                "takedownDate": null
+            },
+            {
+                "id": "2181879",
+                "type": "abook",
+                "releaseDate": "2021-12-01T06:00:00Z",
+                "availabilityInfo": [
+                    {
+                        "isReleased": true,
+                        "releaseDate": "2021-12-01T06:00:00Z",
+                        "type": "subscription"
+                    }
+                ],
+                "isGeoRestricted": false,
+                "isReleased": true,
+                "publisher": {
+                    "name": "Alrevés Editorial"
+                },
+                "isLockedContent": false
+            }
+        ],
+        "consumableId": "2183012",
+        "bookId": 3784920,
+        "originalTitle": "",
+        "isAbridged": false,
+        "audiobookSampleUrl": "https://audio-previews.storytel.net/assets/consumables/2183012/abook/preview",
+        "trailerData": null,
+        "ratings": {
+            "averageRating": 0.0,
+            "numberOfRatings": 0
+        },
+        "cover": {
+            "url": "https://covers.storytel.com/jpg-640/0402000571427.b066e3aa-72a2-4bce-a2b6-3f6397bfa49d?optimize=high",
+            "width": 640,
+            "height": 640
+        },
+        "category": {
+            "name": "Non-Fiction",
+            "deepLink": null
+        },
+        "translators": [],
+        "seriesInfo": {
+            "id": "48857",
+            "name": "Sin Ficción",
+            "orderInSeries": 1,
+            "deepLink": "storytel://vertical-list/explore/lists/series/48857"
+        },
+        "duration": {
+            "hours": 0,
+            "minutes": 48,
+            "seconds": 50
+        },
+        "similarBooksContentBlock": {
+            "displayType": "horizontalList",
+            "title": "Similar titles",
+            "id": "similar-books-2183012",
+            "subtitle": null,
+            "itemsUrl": "https://api.storytel.net/explore/lists/similar-books/2183012?includeListDetails=false",
+            "deepLink": "storytel://vertical-list/explore/lists/similar-books/2183012?includeListDetails=true"
+        },
+        "similarItemsPageDeepLink": "storytel://inspirational-page/explore/similar-items/2183012",
+        "analytics": {
+            "id": "book-details-2183012"
+        },
+        "showCobranding": false,
+        "userNotices": [],
+        "type": "detailedBook",
+        "_download_url_isbn": "0402000571427",
+        "idDownload": "1lObyy16hVhS_pOLJNf5zPiI9j6YlvxEB"
+    }
+}
