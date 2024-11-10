@@ -10,6 +10,8 @@ export default function AudiobookDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [book, setBook] = useState<Audiobook | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentChapter, setCurrentChapter] = useState(0);
   const { playbackState, updatePlaybackState, calculateCurrentChapter } = usePlaybackState(id);
   const { addRecentBook } = useRecentBooks();
@@ -26,22 +28,34 @@ export default function AudiobookDetail() {
   useEffect(() => {
     if (!id) return;
 
-    // Fetch the JSON data dynamically
-    fetch('/data/consolidated_data.json')
-      .then(response => response.json())
-      .then(data => {
-        const foundBook = Object.values(data).find(book => book.idDownload === id);
-        if (foundBook) {
-          setBook(foundBook);
-          addRecentBook(foundBook);
-          
-          if (playbackState?.bookId === id) {
-            setCurrentChapter(playbackState.chapter);
+    setLoading(true);
+    setError(null);
+
+    // Fetch from the book endpoint
+    fetch(`/api/book/${encodeURIComponent(id)}`)
+      .then(response => {
+        if (!response.ok) {
+          if (response.status === 404) {
+            throw new Error('Audiobook not found');
           }
+          throw new Error('Error loading audiobook');
+        }
+        return response.json();
+      })
+      .then(book => {
+        setBook(book);
+        addRecentBook(book);
+        
+        if (playbackState?.bookId === id) {
+          setCurrentChapter(playbackState.chapter);
         }
       })
       .catch(error => {
-        console.error('Error loading audiobook data:', error);
+        console.error('Error loading audiobook:', error);
+        setError(error.message);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [id, addRecentBook, playbackState]);
 
@@ -51,14 +65,25 @@ export default function AudiobookDetail() {
     }
   }, [id, playbackState]);
 
-  if (!book) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <p className="text-textSecondary mb-4">Audiobook not found</p>
+        <div className="relative w-16 h-16">
+          <div className="absolute inset-0 border-4 border-accent/30 rounded-full animate-pulse-slow"></div>
+          <div className="absolute inset-0 border-4 border-accent rounded-full animate-spin" style={{ borderRightColor: 'transparent', animationDuration: '1s' }}></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !book) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center p-8 glass-effect rounded-2xl max-w-md mx-4">
+          <p className="text-red-500 mb-4">{error || 'Audiobook not found'}</p>
           <button
             onClick={() => navigate('/')}
-            className="px-4 py-2 bg-secondary text-white rounded hover:bg-blue-600"
+            className="px-6 py-3 bg-gradient-to-r from-primary to-accent text-white rounded-xl hover:opacity-90 transition-opacity"
           >
             Return to Library
           </button>

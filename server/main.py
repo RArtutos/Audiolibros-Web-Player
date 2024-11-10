@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import json
 from typing import Dict, List, Optional
@@ -144,3 +144,16 @@ async def get_audiobooks(
             "total_pages": total_pages
         }
     }
+
+@app.get("/api/book/{book_id}")
+async def get_book(book_id: str):
+    # Search for the book by idDownload
+    book = next(
+        (book for book in audiobooks.values() if book["idDownload"] == book_id),
+        None
+    )
+    
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    
+    return book
