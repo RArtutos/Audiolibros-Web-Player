@@ -5,7 +5,6 @@ import { Audiobook } from '../types/audiobook';
 import AudioPlayer from '../components/AudioPlayer';
 import { usePlaybackState } from '../hooks/usePlaybackState';
 import { useRecentBooks } from '../hooks/useRecentBooks';
-import audiobooksData from '../data/consolidated_data.json';
 
 export default function AudiobookDetail() {
   const { id } = useParams<{ id: string }>();
@@ -27,16 +26,24 @@ export default function AudiobookDetail() {
   useEffect(() => {
     if (!id) return;
 
-    const foundBook = Object.values(audiobooksData).find(book => book.idDownload === id);
-    if (foundBook) {
-      setBook(foundBook);
-      addRecentBook(foundBook);
-      
-      if (playbackState?.bookId === id) {
-        setCurrentChapter(playbackState.chapter);
-      }
-    }
-  }, [id, addRecentBook]);
+    // Fetch the JSON data dynamically
+    fetch('/data/consolidated_data.json')
+      .then(response => response.json())
+      .then(data => {
+        const foundBook = Object.values(data).find(book => book.idDownload === id);
+        if (foundBook) {
+          setBook(foundBook);
+          addRecentBook(foundBook);
+          
+          if (playbackState?.bookId === id) {
+            setCurrentChapter(playbackState.chapter);
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error loading audiobook data:', error);
+      });
+  }, [id, addRecentBook, playbackState]);
 
   useEffect(() => {
     if (playbackState?.bookId === id) {

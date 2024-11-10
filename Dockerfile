@@ -14,12 +14,10 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Ensure data directory exists
-RUN mkdir -p /app/public/data
-
-# Move the large JSON to public directory before build
-RUN if [ -f "/app/src/data/consolidated_data.json" ]; then \
-    mv /app/src/data/consolidated_data.json /app/public/data/; \
+# Create data directory and move JSON file if it exists
+RUN mkdir -p /app/public/data && \
+    if [ -f "/app/src/data/consolidated_data.json" ]; then \
+      mv /app/src/data/consolidated_data.json /app/public/data/; \
     fi
 
 # Build the application
@@ -37,8 +35,8 @@ COPY --from=builder /app/public/data /usr/share/nginx/html/data
 
 # Create cache directories and set permissions
 RUN mkdir -p /var/cache/nginx && \
-    chown -R nginx:nginx /var/cache/nginx && \
-    chmod -R 755 /var/cache/nginx
+    chown -R nginx:nginx /var/cache/nginx /usr/share/nginx/html && \
+    chmod -R 755 /var/cache/nginx /usr/share/nginx/html
 
 # Use non-root user
 USER nginx
