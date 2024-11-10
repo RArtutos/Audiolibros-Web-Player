@@ -1,13 +1,18 @@
 export function normalizeString(str: string): string {
-  return str
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
-    .replace(/[^a-z0-9\s]/gi, '') // Remove special characters
-    .trim();
+  try {
+    return str
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9\s]/gi, '')
+      .trim();
+  } catch {
+    return '';
+  }
 }
 
 export function searchIncludes(text: string, search: string): boolean {
+  if (!text || !search) return false;
   return normalizeString(text).includes(normalizeString(search));
 }
 

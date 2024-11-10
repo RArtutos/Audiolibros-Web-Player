@@ -22,12 +22,12 @@ export default function AudiobookList() {
   
   const { audiobooks, loading, error, totalPages } = useAudiobooks(searchFilters, currentPage);
 
-  // Debounced search
+  // Debounced search with longer delay for better performance
   const debouncedSearch = useCallback(
     debounce((value: string) => {
       setSearchFilters(prev => ({ ...prev, query: value }));
       setCurrentPage(1);
-    }, 300),
+    }, 500),
     []
   );
 
@@ -52,7 +52,8 @@ export default function AudiobookList() {
     setCurrentPage(1);
   };
 
-  if (loading) {
+  // Render loading state
+  if (loading && !Object.keys(audiobooks).length) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="relative w-16 h-16">
@@ -165,6 +166,15 @@ export default function AudiobookList() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 pb-12">
+        {loading && (
+          <div className="fixed bottom-4 right-4 bg-surface/80 backdrop-blur-xl p-4 rounded-xl shadow-lg border border-border">
+            <div className="flex items-center gap-3">
+              <div className="w-5 h-5 border-2 border-accent rounded-full animate-spin" style={{ borderRightColor: 'transparent' }}></div>
+              <span className="text-sm text-textSecondary">Cargando más audiolibros...</span>
+            </div>
+          </div>
+        )}
+
         {recentBooks.length > 0 && !searchFilters.query && (
           <div className="mb-12">
             <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
@@ -194,7 +204,7 @@ export default function AudiobookList() {
           ))}
         </div>
 
-        {Object.keys(audiobooks).length === 0 && (
+        {Object.keys(audiobooks).length === 0 && !loading && (
           <div className="text-center py-12">
             <p className="text-textSecondary">No se encontraron audiolibros que coincidan con tu búsqueda.</p>
           </div>
