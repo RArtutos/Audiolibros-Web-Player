@@ -35,7 +35,7 @@ export default function AudiobookDetail() {
 
       try {
         // Fetch book details
-        const bookResponse = await fetch(`/api/book/${encodeURIComponent(id)}`);
+        const bookResponse = await fetch(`http://localhost:8000/api/book/${encodeURIComponent(id)}`);
         if (!bookResponse.ok) {
           throw new Error(bookResponse.status === 404 ? 'Audiobook not found' : 'Error loading audiobook');
         }
@@ -44,7 +44,7 @@ export default function AudiobookDetail() {
         addRecentBook(bookData);
 
         // Fetch audio URL
-        const audioResponse = await fetch(`/api/redirect/${bookData.idDownload}`);
+        const audioResponse = await fetch(`http://localhost:8000/api/redirect/${bookData.idDownload}`);
         if (!audioResponse.ok) {
           throw new Error('Error loading audio URL');
         }
