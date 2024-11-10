@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 import unicodedata
 from pathlib import Path
 import httpx
+import random
 
 # Initialize FastAPI app
 app = FastAPI()
@@ -32,7 +33,8 @@ async def get_audiobooks(
     query: Optional[str] = Query(None),
     type: str = Query("all"),
     page: int = Query(1, ge=1),
-    per_page: int = Query(20, ge=1, le=100)
+    per_page: int = Query(20, ge=1, le=100),
+    seed: Optional[int] = Query(None)  # Add seed parameter
 ):
     try:
         # Filter books based on query and type
@@ -62,15 +64,24 @@ async def get_audiobooks(
                 elif type == "genre" and any(query in genre.lower() for genre in book["genres"]):
                     filtered_books[id] = book
 
+        # Convert to list for randomization
+        books_list = list(filtered_books.items())
+        
+        # Use seed for random if provided
+        if seed is not None:
+            random.seed(seed)
+            random.shuffle(books_list)
+        
         # Pagination
-        total = len(filtered_books)
+        total = len(books_list)
         total_pages = max(1, (total + per_page - 1) // per_page)
         page = min(page, total_pages)
         
         start = (page - 1) * per_page
         end = start + per_page
         
-        items = dict(list(filtered_books.items())[start:end])
+        # Convert back to dict
+        items = dict(books_list[start:end])
         
         return {
             "data": items,

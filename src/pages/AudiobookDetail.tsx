@@ -6,10 +6,12 @@ import AudioPlayer from '../components/AudioPlayer';
 import { usePlaybackState } from '../hooks/usePlaybackState';
 import { useRecentBooks } from '../hooks/useRecentBooks';
 import { useFavorites } from '../hooks/useFavorites';
+import { useTheme } from '../hooks/useTheme';
 
 export default function AudiobookDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const [book, setBook] = useState<Audiobook | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -127,22 +129,22 @@ export default function AudiobookDetail() {
   const audiobookFormat = book.formats.find(f => f.type === 'abook')!;
 
   return (
-    <div className="min-h-screen bg-background pb-40">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="min-h-screen bg-background">
+      <div className="max-w-7xl mx-auto px-4 pb-40">
         {/* Header */}
         <header className="py-6 mb-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate('/')}
-                className="p-2 hover:bg-surface rounded-xl transition-colors"
+                className={`p-2 hover:bg-surface rounded-xl transition-colors ${theme === 'darker' ? 'text-white' : ''}`}
                 title="Volver al inicio"
               >
                 <ArrowLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={() => navigate('/')}
-                className="p-2 hover:bg-surface rounded-xl transition-colors"
+                className={`p-2 hover:bg-surface rounded-xl transition-colors ${theme === 'darker' ? 'text-white' : ''}`}
                 title="Ir al menú principal"
               >
                 <Home className="w-6 h-6" />

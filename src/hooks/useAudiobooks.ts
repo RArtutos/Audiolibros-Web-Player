@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AudiobookData, SearchFilters } from '../types/audiobook';
+import { getRandomSeed } from '../utils/random';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -20,7 +21,8 @@ export function useAudiobooks(filters: SearchFilters, page: number = 1) {
         const params = new URLSearchParams({
           page: page.toString(),
           per_page: ITEMS_PER_PAGE.toString(),
-          type: filters.type
+          type: filters.type,
+          seed: getRandomSeed().toString() // Add daily random seed
         });
         
         if (filters.query) {
