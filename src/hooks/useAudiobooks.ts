@@ -1,23 +1,12 @@
-import { useState, useEffect, useMemo } from 'react';
-import { APP_CONFIG } from '../config/app.config';
+import { useState, useEffect } from 'react';
 import { AudiobookData, SearchFilters } from '../types/audiobook';
-import audiobooksData from '../data/consolidated_data.json';
-import { searchIncludes } from '../utils/search';
 
-function calculateRelevanceScore(book: any, searchTerm: string): number {
-  let score = 0;
-  
-  if (searchIncludes(book.title, searchTerm)) score += 10;
-  if (book.authors.some((author: any) => 
-    searchIncludes(typeof author === 'string' ? author : author.name, searchTerm)
-  )) score += 5;
-  if (book.narrators.some((narrator: any) => 
-    searchIncludes(typeof narrator === 'string' ? narrator : narrator.name, searchTerm)
-  )) score += 5;
-  if (book.genres.some((genre: string) => searchIncludes(genre, searchTerm))) score += 3;
+// In development, we'll use the direct path, in production it will be /data/consolidated_data.json
+const DATA_URL = import.meta.env.DEV 
+  ? '/src/data/consolidated_data.json'
+  : '/data/consolidated_data.json';
 
-  return score;
-}
+const ITEMS_PER_PAGE = 20;
 
 export function useAudiobooks(filters: SearchFilters, page: number = 1) {
   const [loading, setLoading] = useState(true);
@@ -25,70 +14,100 @@ export function useAudiobooks(filters: SearchFilters, page: number = 1) {
   const [audiobooks, setAudiobooks] = useState<AudiobookData>({});
   const [totalPages, setTotalPages] = useState(1);
 
-  const processedBooks = useMemo(() => {
-    const allBooks = Object.entries(audiobooksData);
-    
-    if (!filters.query) {
-      return allBooks.sort(() => Math.random() - 0.5);
-    }
-
-    return allBooks
-      .filter(([_, book]) => {
-        const searchTerm = filters.query.toLowerCase();
-        
-        switch (filters.type) {
-          case 'title':
-            return searchIncludes(book.title, searchTerm);
-          case 'author':
-            return book.authors.some(author => 
-              searchIncludes(typeof author === 'string' ? author : author.name, searchTerm)
-            );
-          case 'narrator':
-            return book.narrators.some(narrator => 
-              searchIncludes(typeof narrator === 'string' ? narrator : narrator.name, searchTerm)
-            );
-          case 'genre':
-            return book.genres.some(genre => 
-              searchIncludes(genre, searchTerm)
-            );
-          default:
-            return (
-              searchIncludes(book.title, searchTerm) ||
-              book.authors.some(author => 
-                searchIncludes(typeof author === 'string' ? author : author.name, searchTerm)
-              ) ||
-              book.narrators.some(narrator => 
-                searchIncludes(typeof narrator === 'string' ? narrator : narrator.name, searchTerm)
-              ) ||
-              book.genres.some(genre => 
-                searchIncludes(genre, searchTerm)
-              )
-            );
-        }
-      })
-      .sort(([_, a], [__, b]) => {
-        const scoreA = calculateRelevanceScore(a, filters.query);
-        const scoreB = calculateRelevanceScore(b, filters.query);
-        return scoreB - scoreA;
-      });
-  }, [filters]);
-
   useEffect(() => {
-    setLoading(true);
-    
-    try {
-      const start = (page - 1) * APP_CONFIG.itemsPerPage;
-      const end = start + APP_CONFIG.itemsPerPage;
-      
-      setAudiobooks(Object.fromEntries(processedBooks.slice(start, end)));
-      setTotalPages(Math.ceil(processedBooks.length / APP_CONFIG.itemsPerPage));
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ha ocurrido un error');
-    } finally {
-      setLoading(false);
-    }
-  }, [processedBooks, page]);
+    const controller = new AbortController();
+
+    const fetchAudiobooks = async () => {
+      setLoading(true);
+      try {
+        // Fetch only the headers first to get the file size
+        const headResponse = await fetch(DATA_URL, {
+          method: 'HEAD',
+          signal: controller.signal
+        });
+        
+        // Use range requests to get only the needed portion
+        const response = await fetch(DATA_URL, {
+          signal: controller.signal,
+          headers: {
+            'Range': `bytes=0-${1024 * 1024 * 10}` // First 10MB only
+          }
+        });
+
+        if (!response.ok) throw new Error('Error al cargar los audiolibros');
+
+        const reader = response.body?.getReader();
+        if (!reader) throw new Error('Stream no disponible');
+
+        let result = '';
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          result += new TextDecoder().decode(value);
+          
+          // Try to find a complete object
+          try {
+            const lastBrace = result.lastIndexOf('}');
+            if (lastBrace > -1) {
+              const data = JSON.parse(result.substring(0, lastBrace + 1));
+              
+              // Filter and paginate in memory
+              const filteredData = Object.entries(data).filter(([_, book]) => {
+                if (!filters.query) return true;
+                
+                const searchTerm = filters.query.toLowerCase();
+                switch (filters.type) {
+                  case 'title':
+                    return book.title.toLowerCase().includes(searchTerm);
+                  case 'author':
+                    return book.authors.some(author => 
+                      (typeof author === 'string' ? author : author.name)
+                        .toLowerCase().includes(searchTerm)
+                    );
+                  case 'narrator':
+                    return book.narrators.some(narrator => 
+                      (typeof narrator === 'string' ? narrator : narrator.name)
+                        .toLowerCase().includes(searchTerm)
+                    );
+                  case 'genre':
+                    return book.genres.some(genre => 
+                      genre.toLowerCase().includes(searchTerm)
+                    );
+                  default:
+                    return true;
+                }
+              });
+
+              const start = (page - 1) * ITEMS_PER_PAGE;
+              const end = start + ITEMS_PER_PAGE;
+              const paginatedData = Object.fromEntries(filteredData.slice(start, end));
+
+              setAudiobooks(paginatedData);
+              setTotalPages(Math.ceil(filteredData.length / ITEMS_PER_PAGE));
+              break;
+            }
+          } catch (e) {
+            // Continue reading if we don't have a complete JSON object yet
+            continue;
+          }
+        }
+        
+        reader.cancel();
+        setError(null);
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') return;
+        setError(err instanceof Error ? err.message : 'Ha ocurrido un error');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAudiobooks();
+
+    return () => {
+      controller.abort();
+    };
+  }, [filters, page]);
 
   return { audiobooks, loading, error, totalPages };
 }
