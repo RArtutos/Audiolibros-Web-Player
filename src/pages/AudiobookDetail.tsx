@@ -29,19 +29,24 @@ export default function AudiobookDetail() {
   }, [navigate]);
 
   useEffect(() => {
-    if (!id) return;
-
+    let mounted = true;
+    
     const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-
+      if (!id) return;
+      
       try {
+        setLoading(true);
+        setError(null);
+
         // Fetch book details
         const bookResponse = await fetch(`/api/book/${encodeURIComponent(id)}`);
         if (!bookResponse.ok) {
           throw new Error(bookResponse.status === 404 ? 'Audiolibro no encontrado' : 'Error al cargar el audiolibro');
         }
         const bookData = await bookResponse.json();
+        
+        if (!mounted) return;
+        
         setBook(bookData);
         addRecentBook(bookData);
 
@@ -51,21 +56,31 @@ export default function AudiobookDetail() {
           throw new Error('Error al cargar la URL del audio');
         }
         const { url } = await audioResponse.json();
+        
+        if (!mounted) return;
+        
         setAudioUrl(url);
 
         if (playbackState?.bookId === id) {
           setCurrentChapter(playbackState.chapter);
         }
       } catch (error) {
+        if (!mounted) return;
         console.error('Error:', error);
         setError(error instanceof Error ? error.message : 'Ha ocurrido un error');
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchData();
-  }, [id, addRecentBook, playbackState]);
+
+    return () => {
+      mounted = false;
+    };
+  }, [id, addRecentBook]); // Removed playbackState from dependencies
 
   if (loading) {
     return (
@@ -220,25 +235,27 @@ export default function AudiobookDetail() {
       </div>
 
       {/* Audio player */}
-      <div className="fixed bottom-0 left-0 right-0">
-        <AudioPlayer
-          audioUrl={audioUrl}
-          format={audiobookFormat}
-          bookId={id!}
-          currentChapter={currentChapter}
-          onChapterChange={setCurrentChapter}
-          onTimeUpdate={(time) => {
-            const chapter = calculateCurrentChapter(audiobookFormat, time);
-            if (chapter !== currentChapter) {
-              setCurrentChapter(chapter);
-            }
-            updatePlaybackState({
-              chapter,
-              timestamp: time
-            });
-          }}
-        />
-      </div>
+      {audioUrl && (
+        <div className="fixed bottom-0 left-0 right-0">
+          <AudioPlayer
+            audioUrl={audioUrl}
+            format={audiobookFormat}
+            bookId={id!}
+            currentChapter={currentChapter}
+            onChapterChange={setCurrentChapter}
+            onTimeUpdate={(time) => {
+              const chapter = calculateCurrentChapter(audiobookFormat, time);
+              if (chapter !== currentChapter) {
+                setCurrentChapter(chapter);
+              }
+              updatePlaybackState({
+                chapter,
+                timestamp: time
+              });
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
