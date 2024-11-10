@@ -7,6 +7,7 @@ import { useAudiobooks } from '../hooks/useAudiobooks';
 import { useRecentBooks } from '../hooks/useRecentBooks';
 import { useTheme } from '../hooks/useTheme';
 import { debounce } from '../utils/search';
+import Pagination from '../components/Pagination';
 
 export default function AudiobookList() {
   const navigate = useNavigate();
@@ -20,14 +21,13 @@ export default function AudiobookList() {
   const [currentPage, setCurrentPage] = useState(1);
   const { recentBooks, removeRecentBook } = useRecentBooks();
   
-  const { audiobooks, loading, error, totalPages } = useAudiobooks(searchFilters, currentPage);
+  const { audiobooks, loading, error, totalPages, total } = useAudiobooks(searchFilters, currentPage);
 
-  // Debounced search with longer delay for better performance
   const debouncedSearch = useCallback(
     debounce((value: string) => {
       setSearchFilters(prev => ({ ...prev, query: value }));
       setCurrentPage(1);
-    }, 500),
+    }, 300),
     []
   );
 
@@ -51,18 +51,6 @@ export default function AudiobookList() {
     setSearchFilters(prev => ({ ...prev, type }));
     setCurrentPage(1);
   };
-
-  // Render loading state
-  if (loading && !Object.keys(audiobooks).length) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="relative w-16 h-16">
-          <div className="absolute inset-0 border-4 border-accent/30 rounded-full animate-pulse-slow"></div>
-          <div className="absolute inset-0 border-4 border-accent rounded-full animate-spin" style={{ borderRightColor: 'transparent', animationDuration: '1s' }}></div>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -166,11 +154,11 @@ export default function AudiobookList() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 pb-12">
-        {loading && (
-          <div className="fixed bottom-4 right-4 bg-surface/80 backdrop-blur-xl p-4 rounded-xl shadow-lg border border-border">
-            <div className="flex items-center gap-3">
-              <div className="w-5 h-5 border-2 border-accent rounded-full animate-spin" style={{ borderRightColor: 'transparent' }}></div>
-              <span className="text-sm text-textSecondary">Cargando más audiolibros...</span>
+        {loading && !Object.keys(audiobooks).length && (
+          <div className="flex items-center justify-center py-12">
+            <div className="relative w-16 h-16">
+              <div className="absolute inset-0 border-4 border-accent/30 rounded-full animate-pulse-slow"></div>
+              <div className="absolute inset-0 border-4 border-accent rounded-full animate-spin" style={{ borderRightColor: 'transparent', animationDuration: '1s' }}></div>
             </div>
           </div>
         )}
@@ -194,6 +182,12 @@ export default function AudiobookList() {
           </div>
         )}
 
+        {searchFilters.query && (
+          <div className="mb-6 text-textSecondary">
+            Se encontraron {total} resultados para "{searchFilters.query}"
+          </div>
+        )}
+
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
           {Object.entries(audiobooks).map(([key, book]) => (
             <AudiobookCard
@@ -211,20 +205,12 @@ export default function AudiobookList() {
         )}
 
         {totalPages > 1 && (
-          <div className="mt-12 flex justify-center gap-2 overflow-x-auto pb-2">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <button
-                key={page}
-                onClick={() => setCurrentPage(page)}
-                className={`w-10 h-10 rounded-xl transition-all ${
-                  currentPage === page
-                    ? 'bg-gradient-to-r from-primary to-accent text-white shadow-lg shadow-accent/25'
-                    : 'bg-surface text-text hover:bg-border'
-                }`}
-              >
-                {page}
-              </button>
-            ))}
+          <div className="mt-12">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
           </div>
         )}
       </main>

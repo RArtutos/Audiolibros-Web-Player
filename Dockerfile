@@ -1,48 +1,59 @@
+# Stage 1: Build the Node.js app
 FROM node:20-slim as builder
 
-# Increase Node.js memory limit
+# Aumenta el límite de memoria de Node.js
 ENV NODE_OPTIONS="--max-old-space-size=8192"
 
+# Establece el directorio de trabajo en /app
 WORKDIR /app
 
-# Copy package files
+# Copia los archivos package.json y package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# Instala las dependencias
 RUN npm ci
 
-# Copy source code
+# Copia el código fuente
 COPY . .
 
-# Create data directory and move JSON file if it exists
+# Crea el directorio de datos y mueve el archivo JSON si existe
 RUN mkdir -p /app/public/data && \
     if [ -f "/app/src/data/consolidated_data.json" ]; then \
       mv /app/src/data/consolidated_data.json /app/public/data/; \
     fi
 
-# Build the application
+# Compila la aplicación
 RUN npm run build
 
-# Production stage
-FROM nginx:1.25-alpine
+# Stage 2: Configuración de NGINX para servir la aplicación de Node.js
+FROM nginx:1.25-alpine as nginx
 
-# Copy nginx configuration
+# Copia la configuración de NGINX
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy built assets from builder stage
+# Copia los archivos compilados del primer stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY --from=builder /app/public/data /usr/share/nginx/html/data
 
-# Create cache directories and set permissions
+# Crea directorios de caché y ajusta permisos
 RUN mkdir -p /var/cache/nginx && \
     chown -R nginx:nginx /var/cache/nginx /usr/share/nginx/html && \
     chmod -R 755 /var/cache/nginx /usr/share/nginx/html
 
-# Use non-root user
-USER nginx
+# Stage 3: Ejecutar la aplicación de Python con Uvicorn
+FROM python:3.9-slim as uvicorn
 
-# Expose port 31110
-EXPOSE 31110
+# Directorio de trabajo en el contenedor
+WORKDIR /app/server
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Copia los archivos del directorio 'server'
+COPY server/ /app/server
+
+# Instala las dependencias de Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expone los puertos necesarios
+EXPOSE 8000 31110
+
+# Comando para ejecutar uvicorn y NGINX
+CMD uvicorn main:app --host 0.0.0.0 --port 8000 & nginx -g "daemon off;"
