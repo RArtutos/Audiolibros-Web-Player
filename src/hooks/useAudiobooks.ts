@@ -1,8 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { AudiobookData, SearchFilters } from '../types/audiobook';
 
-// Use relative URL to let the proxy handle the routing
-const API_URL = '/api/audiobooks';
 const ITEMS_PER_PAGE = 20;
 
 export function useAudiobooks(filters: SearchFilters, page: number = 1) {
@@ -29,7 +27,7 @@ export function useAudiobooks(filters: SearchFilters, page: number = 1) {
           params.append('query', filters.query);
         }
         
-        const response = await fetch(`${API_URL}?${params}`);
+        const response = await fetch(`/api/audiobooks?${params}`);
         if (!response.ok) throw new Error('Error loading audiobooks');
         
         const data = await response.json();
