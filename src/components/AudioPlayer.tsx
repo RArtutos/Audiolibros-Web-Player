@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Moon, AlertCircle } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Moon, AlertCircle, Loader } from 'lucide-react';
 import { Format } from '../types/audiobook';
 
 interface AudioPlayerProps {
@@ -9,6 +9,8 @@ interface AudioPlayerProps {
   currentChapter: number;
   onChapterChange: (chapter: number) => void;
   onTimeUpdate?: (time: number) => void;
+  isLoading?: boolean;
+  onRetryAudio?: () => void;
 }
 
 const PLAYBACK_SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
@@ -25,7 +27,9 @@ export default function AudioPlayer({
   bookId,
   currentChapter = 0,
   onChapterChange,
-  onTimeUpdate
+  onTimeUpdate,
+  isLoading,
+  onRetryAudio
 }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -67,19 +71,8 @@ export default function AudioPlayer({
       console.error('Audio error:', audio.error);
       if (retryCount < 3) {
         try {
-          // Fetch the audio URL first to handle redirects
-          const response = await fetch(audioUrl);
-          if (!response.ok) throw new Error('Failed to fetch audio');
-          
-          const finalUrl = response.url;
-          audio.src = finalUrl;
-          await audio.load();
-          
-          if (isPlaying) {
-            await audio.play();
-          }
-          
           setRetryCount(prev => prev + 1);
+          onRetryAudio?.();
         } catch (err) {
           console.error('Retry failed:', err);
           setLoadError(true);
@@ -141,23 +134,13 @@ export default function AudioPlayer({
   }, [sleepTimer, sleepTimerEnd]);
 
   const togglePlayPause = async () => {
-    if (!audioRef.current) return;
+    if (!audioRef.current || isLoading) return;
 
     try {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        // Ensure we have the latest audio URL
-        const response = await fetch(audioUrl);
-        if (!response.ok) throw new Error('Failed to fetch audio');
-        
-        const finalUrl = response.url;
-        if (audioRef.current.src !== finalUrl) {
-          audioRef.current.src = finalUrl;
-          await audioRef.current.load();
-        }
-        
         await audioRef.current.play();
         setIsPlaying(true);
       }
@@ -168,9 +151,20 @@ export default function AudioPlayer({
   };
 
   const handleProgressChange = (time: number) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-      setCurrentTime(time);
+    if (!audioRef.current || isLoading) return;
+    
+    audioRef.current.currentTime = time;
+    setCurrentTime(time);
+    
+    if (hasChapters) {
+      let totalTime = 0;
+      for (let i = 0; i < format.chapters.length; i++) {
+        totalTime += format.chapters[i].durationInSeconds;
+        if (time < totalTime) {
+          onChapterChange(i);
+          break;
+        }
+      }
     }
   };
 
@@ -198,36 +192,26 @@ export default function AudioPlayer({
     }
   };
 
-  const retry = async () => {
-    if (!audioRef.current) return;
+  const retry = () => {
+    if (!audioRef.current || isLoading) return;
     
-    try {
-      setLoadError(false);
-      setRetryCount(0);
-      
-      const response = await fetch(audioUrl);
-      if (!response.ok) throw new Error('Failed to fetch audio');
-      
-      const finalUrl = response.url;
-      audioRef.current.src = finalUrl;
-      await audioRef.current.load();
-      
-      if (isPlaying) {
-        await audioRef.current.play();
-      }
-    } catch (error) {
-      console.error('Retry failed:', error);
-      setLoadError(true);
-    }
+    setLoadError(false);
+    setRetryCount(0);
+    onRetryAudio?.();
   };
 
   let overallProgress;
   let remainingTime;
+  let currentChapterRemaining;
 
   if (hasChapters) {
     const previousChaptersDuration = format.chapters
       .slice(0, currentChapter)
       .reduce((acc, chapter) => acc + chapter.durationInSeconds, 0);
+    const currentChapterTime = currentTime - previousChaptersDuration;
+    const currentChapterDuration = format.chapters[currentChapter].durationInSeconds;
+    currentChapterRemaining = (currentChapterDuration - currentChapterTime) / playbackSpeed;
+    
     overallProgress = ((previousChaptersDuration + currentTime) / totalDuration) * 100;
     remainingTime = (totalDuration - (previousChaptersDuration + currentTime)) / playbackSpeed;
   } else {
@@ -266,8 +250,13 @@ export default function AudioPlayer({
             <button
               onClick={retry}
               className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+              disabled={isLoading}
             >
-              Reintentar
+              {isLoading ? (
+                <Loader className="w-5 h-5 animate-spin" />
+              ) : (
+                'Reintentar'
+              )}
             </button>
           </div>
         )}
@@ -284,8 +273,15 @@ export default function AudioPlayer({
             <div className="hidden sm:block">
               Progreso total: {Math.round(overallProgress)}%
             </div>
-            <div>
-              Tiempo restante: {formatTime(remainingTime)} ({playbackSpeed}x)
+            <div className="flex flex-col sm:flex-row sm:gap-4 items-end sm:items-center">
+              {currentChapterRemaining && (
+                <div>
+                  Tiempo restante del capítulo: {formatTime(currentChapterRemaining)}
+                </div>
+              )}
+              <div>
+                Tiempo restante total: {formatTime(remainingTime)} ({playbackSpeed}x)
+              </div>
             </div>
           </div>
 
@@ -296,6 +292,7 @@ export default function AudioPlayer({
             value={currentTime}
             onChange={(e) => handleProgressChange(parseFloat(e.target.value))}
             className="w-full"
+            disabled={isLoading}
           />
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -304,6 +301,7 @@ export default function AudioPlayer({
                 value={currentChapter}
                 onChange={(e) => onChapterChange(Number(e.target.value))}
                 className="w-full sm:w-64 rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
+                disabled={isLoading}
               >
                 {format.chapters.map((chapter, index) => (
                   <option key={chapter.number} value={index}>
@@ -317,7 +315,7 @@ export default function AudioPlayer({
               {hasChapters && (
                 <button
                   onClick={() => onChapterChange(currentChapter - 1)}
-                  disabled={currentChapter === 0}
+                  disabled={currentChapter === 0 || isLoading}
                   className="p-2 rounded-full hover:bg-background disabled:opacity-50"
                   type="button"
                 >
@@ -327,10 +325,13 @@ export default function AudioPlayer({
 
               <button
                 onClick={togglePlayPause}
-                className="p-3 rounded-full bg-secondary text-white hover:bg-opacity-90"
+                className="p-3 rounded-full bg-secondary text-white hover:bg-opacity-90 disabled:opacity-50"
                 type="button"
+                disabled={isLoading}
               >
-                {isPlaying ? (
+                {isLoading ? (
+                  <Loader className="w-6 h-6 animate-spin" />
+                ) : isPlaying ? (
                   <Pause className="w-6 h-6" />
                 ) : (
                   <Play className="w-6 h-6" />
@@ -340,7 +341,7 @@ export default function AudioPlayer({
               {hasChapters && (
                 <button
                   onClick={() => onChapterChange(currentChapter + 1)}
-                  disabled={currentChapter === format.chapters.length - 1}
+                  disabled={currentChapter === format.chapters.length - 1 || isLoading}
                   className="p-2 rounded-full hover:bg-background disabled:opacity-50"
                   type="button"
                 >
@@ -354,6 +355,7 @@ export default function AudioPlayer({
                 value={playbackSpeed}
                 onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}
                 className="rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
+                disabled={isLoading}
               >
                 {PLAYBACK_SPEEDS.map((speed) => (
                   <option key={speed} value={speed}>
@@ -372,6 +374,7 @@ export default function AudioPlayer({
                   value={volume}
                   onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
                   className="w-24"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -382,6 +385,7 @@ export default function AudioPlayer({
                     className={`p-2 rounded-full hover:bg-background ${
                       sleepTimer ? 'text-secondary' : 'text-textSecondary'
                     }`}
+                    disabled={isLoading}
                   >
                     <Moon className="w-5 h-5" />
                   </button>
@@ -402,6 +406,7 @@ export default function AudioPlayer({
                           ? 'bg-secondary text-white'
                           : 'bg-background text-textSecondary hover:bg-opacity-70'
                       }`}
+                      disabled={isLoading}
                     >
                       {option.value}'
                     </button>

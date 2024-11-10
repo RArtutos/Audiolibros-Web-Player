@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock, Book, Mic, Heart } from 'lucide-react';
+import { ArrowLeft, Clock, Book, Mic, Heart, Home } from 'lucide-react';
 import { Audiobook } from '../types/audiobook';
 import AudioPlayer from '../components/AudioPlayer';
 import { usePlaybackState } from '../hooks/usePlaybackState';
@@ -15,6 +15,7 @@ export default function AudiobookDetail() {
   const [error, setError] = useState<string | null>(null);
   const [currentChapter, setCurrentChapter] = useState(0);
   const [audioUrl, setAudioUrl] = useState<string>('');
+  const [isLoadingAudio, setIsLoadingAudio] = useState(false);
   const { playbackState, updatePlaybackState, calculateCurrentChapter } = usePlaybackState(id);
   const { addRecentBook } = useRecentBooks();
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -28,17 +29,17 @@ export default function AudiobookDetail() {
     });
   }, [navigate]);
 
+  // Fetch book details first
   useEffect(() => {
     let mounted = true;
     
-    const fetchData = async () => {
+    const fetchBookDetails = async () => {
       if (!id) return;
       
       try {
         setLoading(true);
         setError(null);
 
-        // Fetch book details
         const bookResponse = await fetch(`/api/book/${encodeURIComponent(id)}`);
         if (!bookResponse.ok) {
           throw new Error(bookResponse.status === 404 ? 'Audiolibro no encontrado' : 'Error al cargar el audiolibro');
@@ -49,17 +50,6 @@ export default function AudiobookDetail() {
         
         setBook(bookData);
         addRecentBook(bookData);
-
-        // Fetch audio URL
-        const audioResponse = await fetch(`/api/redirect/${bookData.idDownload}`);
-        if (!audioResponse.ok) {
-          throw new Error('Error al cargar la URL del audio');
-        }
-        const { url } = await audioResponse.json();
-        
-        if (!mounted) return;
-        
-        setAudioUrl(url);
 
         if (playbackState?.bookId === id) {
           setCurrentChapter(playbackState.chapter);
@@ -75,12 +65,37 @@ export default function AudiobookDetail() {
       }
     };
 
-    fetchData();
+    fetchBookDetails();
 
     return () => {
       mounted = false;
     };
-  }, [id, addRecentBook]); // Removed playbackState from dependencies
+  }, [id, addRecentBook]);
+
+  // Fetch audio URL separately
+  const fetchAudioUrl = useCallback(async () => {
+    if (!book?.idDownload) return;
+    
+    try {
+      setIsLoadingAudio(true);
+      const audioResponse = await fetch(`/api/redirect/${book.idDownload}`);
+      if (!audioResponse.ok) {
+        throw new Error('Error al cargar la URL del audio');
+      }
+      const { url } = await audioResponse.json();
+      setAudioUrl(url);
+    } catch (error) {
+      console.error('Error loading audio URL:', error);
+    } finally {
+      setIsLoadingAudio(false);
+    }
+  }, [book?.idDownload]);
+
+  useEffect(() => {
+    if (book) {
+      fetchAudioUrl();
+    }
+  }, [book, fetchAudioUrl]);
 
   if (loading) {
     return (
@@ -112,17 +127,27 @@ export default function AudiobookDetail() {
   const audiobookFormat = book.formats.find(f => f.type === 'abook')!;
 
   return (
-    <div className="min-h-screen bg-background pb-32">
+    <div className="min-h-screen bg-background pb-40">
       <div className="max-w-7xl mx-auto px-4">
         {/* Header */}
         <header className="py-6 mb-8">
           <div className="flex items-center justify-between">
-            <button
-              onClick={() => navigate('/')}
-              className="p-2 hover:bg-surface rounded-xl transition-colors"
-            >
-              <ArrowLeft className="w-6 h-6" />
-            </button>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => navigate('/')}
+                className="p-2 hover:bg-surface rounded-xl transition-colors"
+                title="Volver al inicio"
+              >
+                <ArrowLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => navigate('/')}
+                className="p-2 hover:bg-surface rounded-xl transition-colors"
+                title="Ir al menú principal"
+              >
+                <Home className="w-6 h-6" />
+              </button>
+            </div>
             <button
               onClick={() => toggleFavorite(book.idDownload)}
               className={`p-2 rounded-xl transition-colors ${
@@ -253,6 +278,8 @@ export default function AudiobookDetail() {
                 timestamp: time
               });
             }}
+            isLoading={isLoadingAudio}
+            onRetryAudio={fetchAudioUrl}
           />
         </div>
       )}
