@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  audiobooks:
+    build: .
+    ports:
+      - "31110:31110"  # Frontend
+      - "8000:8000"    # Backend API
+    volumes:
+      - ./public/data:/app/public/data
+    environment:
+      - NODE_ENV=production

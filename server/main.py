@@ -5,6 +5,7 @@ from typing import Dict, List, Optional
 import unicodedata
 from pathlib import Path
 
+# Initialize FastAPI app
 app = FastAPI()
 
 # CORS configuration
@@ -16,47 +17,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load data once at startup
-DATA_FILE = Path("public/data/consolidated_data.json")
-with open(DATA_FILE) as f:
-    audiobooks = json.load(f)
-
-# Create search index
-search_index = {}
-for id, book in audiobooks.items():
-    # Index title
-    terms = normalize_text(book["title"]).split()
-    for term in terms:
-        if term not in search_index:
-            search_index[term] = set()
-        search_index[term].add(id)
-    
-    # Index authors
-    for author in book["authors"]:
-        author_name = author["name"] if isinstance(author, dict) else author
-        terms = normalize_text(author_name).split()
-        for term in terms:
-            if term not in search_index:
-                search_index[term] = set()
-            search_index[term].add(id)
-    
-    # Index narrators
-    for narrator in book["narrators"]:
-        narrator_name = narrator["name"] if isinstance(narrator, dict) else narrator
-        terms = normalize_text(narrator_name).split()
-        for term in terms:
-            if term not in search_index:
-                search_index[term] = set()
-            search_index[term].add(id)
-    
-    # Index genres
-    for genre in book["genres"]:
-        terms = normalize_text(genre).split()
-        for term in terms:
-            if term not in search_index:
-                search_index[term] = set()
-            search_index[term].add(id)
-
 def normalize_text(text: str) -> str:
     """Normalize text for searching"""
     text = text.lower()
@@ -64,7 +24,7 @@ def normalize_text(text: str) -> str:
     text = ''.join(c for c in text if not unicodedata.combining(c))
     return ''.join(c for c in text if c.isalnum() or c.isspace())
 
-def search_books(query: str, search_type: str) -> List[str]:
+def search_books(query: str, search_type: str, search_index: Dict[str, set], audiobooks: Dict) -> List[str]:
     """Search books using the index"""
     if not query:
         return list(audiobooks.keys())
@@ -110,6 +70,47 @@ def search_books(query: str, search_type: str) -> List[str]:
     
     return list(results)
 
+# Load data and create search index at startup
+DATA_FILE = Path("public/data/consolidated_data.json")
+with open(DATA_FILE) as f:
+    audiobooks = json.load(f)
+
+# Create search index
+search_index = {}
+for id, book in audiobooks.items():
+    # Index title
+    terms = normalize_text(book["title"]).split()
+    for term in terms:
+        if term not in search_index:
+            search_index[term] = set()
+        search_index[term].add(id)
+    
+    # Index authors
+    for author in book["authors"]:
+        author_name = author["name"] if isinstance(author, dict) else author
+        terms = normalize_text(author_name).split()
+        for term in terms:
+            if term not in search_index:
+                search_index[term] = set()
+            search_index[term].add(id)
+    
+    # Index narrators
+    for narrator in book["narrators"]:
+        narrator_name = narrator["name"] if isinstance(narrator, dict) else narrator
+        terms = normalize_text(narrator_name).split()
+        for term in terms:
+            if term not in search_index:
+                search_index[term] = set()
+            search_index[term].add(id)
+    
+    # Index genres
+    for genre in book["genres"]:
+        terms = normalize_text(genre).split()
+        for term in terms:
+            if term not in search_index:
+                search_index[term] = set()
+            search_index[term].add(id)
+
 @app.get("/api/audiobooks")
 async def get_audiobooks(
     query: Optional[str] = Query(None),
@@ -118,7 +119,7 @@ async def get_audiobooks(
     per_page: int = Query(20, ge=1, le=100)
 ):
     # Search books
-    results = search_books(query, type)
+    results = search_books(query, type, search_index, audiobooks)
     
     # Calculate pagination
     total = len(results)
