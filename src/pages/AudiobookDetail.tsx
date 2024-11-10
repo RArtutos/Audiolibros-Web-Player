@@ -25,39 +25,37 @@ export default function AudiobookDetail() {
     });
   }, [navigate]);
 
-  useEffect(() => {
+  const fetchBookData = useCallback(async () => {
     if (!id) return;
 
-    setLoading(true);
-    setError(null);
+    try {
+      setLoading(true);
+      setError(null);
 
-    // Fetch from the book endpoint
-    fetch(`/api/book/${encodeURIComponent(id)}`)
-      .then(response => {
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('Audiobook not found');
-          }
-          throw new Error('Error loading audiobook');
-        }
-        return response.json();
-      })
-      .then(book => {
-        setBook(book);
-        addRecentBook(book);
-        
-        if (playbackState?.bookId === id) {
-          setCurrentChapter(playbackState.chapter);
-        }
-      })
-      .catch(error => {
-        console.error('Error loading audiobook:', error);
-        setError(error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      const response = await fetch(`/api/book/${encodeURIComponent(id)}`);
+      
+      if (!response.ok) {
+        throw new Error(response.status === 404 ? 'Audiobook not found' : 'Error loading audiobook');
+      }
+
+      const bookData = await response.json();
+      setBook(bookData);
+      addRecentBook(bookData);
+
+      if (playbackState?.bookId === id) {
+        setCurrentChapter(playbackState.chapter);
+      }
+    } catch (error) {
+      console.error('Error loading audiobook:', error);
+      setError(error instanceof Error ? error.message : 'Error loading audiobook');
+    } finally {
+      setLoading(false);
+    }
   }, [id, addRecentBook, playbackState]);
+
+  useEffect(() => {
+    fetchBookData();
+  }, [fetchBookData]);
 
   useEffect(() => {
     if (playbackState?.bookId === id) {
@@ -194,6 +192,7 @@ export default function AudiobookDetail() {
       {/* Audio player fixed at bottom */}
       <div className="fixed bottom-0 left-0 right-0">
         <AudioPlayer
+          key={`${book.idDownload}-${currentChapter}`}
           audioUrl={`https://pelis.gbstream.us.kg/api/v1/redirectdownload/tituloaudilibro.mp3?a=0&id=${book.idDownload}`}
           format={audiobookFormat}
           bookId={id!}
