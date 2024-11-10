@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AudiobookData, SearchFilters } from '../types/audiobook';
 
-const API_URL = 'http://localhost:8000/api/audiobooks';
+// Use relative URL to let the proxy handle the routing
+const API_URL = '/api/audiobooks';
 const ITEMS_PER_PAGE = 20;
 
 export function useAudiobooks(filters: SearchFilters, page: number = 1) {
@@ -29,7 +30,7 @@ export function useAudiobooks(filters: SearchFilters, page: number = 1) {
         }
         
         const response = await fetch(`${API_URL}?${params}`);
-        if (!response.ok) throw new Error('Error al cargar los audiolibros');
+        if (!response.ok) throw new Error('Error loading audiobooks');
         
         const data = await response.json();
         
@@ -41,7 +42,8 @@ export function useAudiobooks(filters: SearchFilters, page: number = 1) {
         setError(null);
       } catch (err) {
         if (!mounted) return;
-        setError(err instanceof Error ? err.message : 'Ha ocurrido un error');
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        setAudiobooks({});
       } finally {
         if (mounted) {
           setLoading(false);

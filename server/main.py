@@ -8,13 +8,15 @@ from pathlib import Path
 # Initialize FastAPI app
 app = FastAPI()
 
-# CORS configuration
+# CORS configuration with more permissive settings
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=3600,
 )
 
 def normalize_text(text: str) -> str:
