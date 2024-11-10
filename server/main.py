@@ -157,21 +157,16 @@ async def get_audiobooks(
 
 @app.get("/api/book/{book_id}")
 async def get_book(book_id: str):
-    try:
-        # Search for the book by idDownload
-        book = next(
-            (book for book in audiobooks.values() if book["idDownload"] == book_id),
-            None
-        )
-        
-        if not book:
-            raise HTTPException(status_code=404, detail="Book not found")
-        
-        return book
-    except Exception as e:
-        if isinstance(e, HTTPException):
-            raise e
-        raise HTTPException(status_code=500, detail=str(e))
+    # Search for the book by idDownload
+    book = next(
+        (book for book in audiobooks.values() if book["idDownload"] == book_id),
+        None
+    )
+    
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    
+    return book
 
 @app.get("/api/redirect/{book_id}")
 async def get_redirect_url(book_id: str):
