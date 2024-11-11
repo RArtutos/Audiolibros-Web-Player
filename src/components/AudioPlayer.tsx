@@ -32,7 +32,6 @@ export default function AudioPlayer({
   onRetryAudio
 }: AudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const adAudioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -42,8 +41,6 @@ export default function AudioPlayer({
   const [sleepTimerEnd, setSleepTimerEnd] = useState<number | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
-  const [isPlayingAd, setIsPlayingAd] = useState(false);
-  const reloadCountRef = useRef(0);
 
   const hasChapters = format.chapters && format.chapters.length > 0;
   const totalDuration = format.durationInMilliseconds / 1000;
@@ -54,14 +51,9 @@ export default function AudioPlayer({
     audio.crossOrigin = "anonymous";
     audio.preload = "auto";
 
-    const adAudio = new Audio('/data/audiolibroAds.mp3');
-    adAudioRef.current = adAudio;
-    adAudio.preload = "auto";
-
     // Set initial properties
     audio.volume = volume;
     audio.playbackRate = playbackSpeed;
-    adAudio.volume = volume;
 
     // Event listeners
     const updateTime = () => {
@@ -90,42 +82,9 @@ export default function AudioPlayer({
       }
     };
 
-    const handleChapterEnd = async () => {
+    const handleEnded = () => {
       if (hasChapters && currentChapter < format.chapters.length - 1) {
-        // Pause main audio
-        audio.pause();
-        setIsPlaying(false);
-        setIsPlayingAd(true);
-
-        try {
-          // Play ad
-          await adAudio.play();
-
-          // When ad ends
-          adAudio.onended = () => {
-            setIsPlayingAd(false);
-            // Trigger double reload
-            const performDoubleReload = () => {
-              if (reloadCountRef.current < 2) {
-                reloadCountRef.current += 1;
-                window.location.reload();
-              } else {
-                // Reset counter and continue to next chapter
-                reloadCountRef.current = 0;
-                onChapterChange(currentChapter + 1);
-                audio.play().catch(console.error);
-                setIsPlaying(true);
-              }
-            };
-            performDoubleReload();
-          };
-        } catch (error) {
-          console.error('Error playing ad:', error);
-          // If ad fails, just move to next chapter
-          onChapterChange(currentChapter + 1);
-          audio.play().catch(console.error);
-          setIsPlaying(true);
-        }
+        onChapterChange(currentChapter + 1);
       } else {
         setIsPlaying(false);
       }
@@ -134,7 +93,7 @@ export default function AudioPlayer({
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('error', handleError);
-    audio.addEventListener('ended', handleChapterEnd);
+    audio.addEventListener('ended', handleEnded);
 
     // Set initial source
     audio.src = audioUrl;
@@ -144,14 +103,9 @@ export default function AudioPlayer({
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('error', handleError);
-      audio.removeEventListener('ended', handleChapterEnd);
+      audio.removeEventListener('ended', handleEnded);
       audio.pause();
       audio.src = '';
-      
-      if (adAudioRef.current) {
-        adAudioRef.current.pause();
-        adAudioRef.current.src = '';
-      }
     };
   }, [audioUrl]);
 
@@ -180,7 +134,7 @@ export default function AudioPlayer({
   }, [sleepTimer, sleepTimerEnd]);
 
   const togglePlayPause = async () => {
-    if (!audioRef.current || isLoading || isPlayingAd) return;
+    if (!audioRef.current || isLoading) return;
 
     try {
       if (isPlaying) {
@@ -197,7 +151,7 @@ export default function AudioPlayer({
   };
 
   const handleProgressChange = (time: number) => {
-    if (!audioRef.current || isLoading || isPlayingAd) return;
+    if (!audioRef.current || isLoading) return;
     
     audioRef.current.currentTime = time;
     setCurrentTime(time);
@@ -217,9 +171,6 @@ export default function AudioPlayer({
   const handleVolumeChange = (newVolume: number) => {
     if (audioRef.current) {
       audioRef.current.volume = newVolume;
-      if (adAudioRef.current) {
-        adAudioRef.current.volume = newVolume;
-      }
       setVolume(newVolume);
     }
   };
@@ -292,12 +243,6 @@ export default function AudioPlayer({
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-surface shadow-lg border-t border-border">
       <div className="max-w-7xl mx-auto px-4 py-4">
-        {isPlayingAd && (
-          <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-secondary/10 text-secondary rounded-lg">
-            <span>Reproduciendo anuncio...</span>
-          </div>
-        )}
-
         {loadError && (
           <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-red-500/10 text-red-500 rounded-lg">
             <AlertCircle className="w-5 h-5" />
@@ -347,7 +292,7 @@ export default function AudioPlayer({
             value={currentTime}
             onChange={(e) => handleProgressChange(parseFloat(e.target.value))}
             className="w-full"
-            disabled={isLoading || isPlayingAd}
+            disabled={isLoading}
           />
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -356,7 +301,7 @@ export default function AudioPlayer({
                 value={currentChapter}
                 onChange={(e) => onChapterChange(Number(e.target.value))}
                 className="w-full sm:w-64 rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
-                disabled={isLoading || isPlayingAd}
+                disabled={isLoading}
               >
                 {format.chapters.map((chapter, index) => (
                   <option key={chapter.number} value={index}>
@@ -370,7 +315,7 @@ export default function AudioPlayer({
               {hasChapters && (
                 <button
                   onClick={() => onChapterChange(currentChapter - 1)}
-                  disabled={currentChapter === 0 || isLoading || isPlayingAd}
+                  disabled={currentChapter === 0 || isLoading}
                   className="p-2 rounded-full hover:bg-background disabled:opacity-50"
                   type="button"
                 >
@@ -382,7 +327,7 @@ export default function AudioPlayer({
                 onClick={togglePlayPause}
                 className="p-3 rounded-full bg-secondary text-white hover:bg-opacity-90 disabled:opacity-50"
                 type="button"
-                disabled={isLoading || isPlayingAd}
+                disabled={isLoading}
               >
                 {isLoading ? (
                   <Loader className="w-6 h-6 animate-spin" />
@@ -396,7 +341,7 @@ export default function AudioPlayer({
               {hasChapters && (
                 <button
                   onClick={() => onChapterChange(currentChapter + 1)}
-                  disabled={currentChapter === format.chapters.length - 1 || isLoading || isPlayingAd}
+                  disabled={currentChapter === format.chapters.length - 1 || isLoading}
                   className="p-2 rounded-full hover:bg-background disabled:opacity-50"
                   type="button"
                 >
@@ -410,7 +355,7 @@ export default function AudioPlayer({
                 value={playbackSpeed}
                 onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}
                 className="rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
-                disabled={isLoading || isPlayingAd}
+                disabled={isLoading}
               >
                 {PLAYBACK_SPEEDS.map((speed) => (
                   <option key={speed} value={speed}>
@@ -440,7 +385,7 @@ export default function AudioPlayer({
                     className={`p-2 rounded-full hover:bg-background ${
                       sleepTimer ? 'text-secondary' : 'text-textSecondary'
                     }`}
-                    disabled={isLoading || isPlayingAd}
+                    disabled={isLoading}
                   >
                     <Moon className="w-5 h-5" />
                   </button>
@@ -461,7 +406,7 @@ export default function AudioPlayer({
                           ? 'bg-secondary text-white'
                           : 'bg-background text-textSecondary hover:bg-opacity-70'
                       }`}
-                      disabled={isLoading || isPlayingAd}
+                      disabled={isLoading}
                     >
                       {option.value}'
                     </button>
