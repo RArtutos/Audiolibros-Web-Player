@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Moon, AlertCircle, Loader } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Volume2, Moon, AlertCircle, Loader, ChevronDown, ChevronUp } from 'lucide-react';
 import { Format } from '../types/audiobook';
+import { cn } from '../lib/utils';
 
 interface AudioPlayerProps {
   audioUrl: string;
@@ -41,6 +42,7 @@ export default function AudioPlayer({
   const [sleepTimerEnd, setSleepTimerEnd] = useState<number | null>(null);
   const [loadError, setLoadError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   const hasChapters = format.chapters && format.chapters.length > 0;
   const totalDuration = format.durationInMilliseconds / 1000;
@@ -51,11 +53,9 @@ export default function AudioPlayer({
     audio.crossOrigin = "anonymous";
     audio.preload = "auto";
 
-    // Set initial properties
     audio.volume = volume;
     audio.playbackRate = playbackSpeed;
 
-    // Event listeners
     const updateTime = () => {
       setCurrentTime(audio.currentTime);
       onTimeUpdate?.(audio.currentTime);
@@ -95,7 +95,6 @@ export default function AudioPlayer({
     audio.addEventListener('error', handleError);
     audio.addEventListener('ended', handleEnded);
 
-    // Set initial source
     audio.src = audioUrl;
     audio.load();
 
@@ -241,187 +240,234 @@ export default function AudioPlayer({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-surface shadow-lg border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 py-4">
-        {loadError && (
-          <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-red-500/10 text-red-500 rounded-lg">
-            <AlertCircle className="w-5 h-5" />
-            <span>Error al cargar el audio.</span>
+    <div className={cn(
+      "fixed bottom-0 left-0 right-0 bg-surface shadow-lg border-t border-border transition-all duration-300",
+      isMinimized ? "h-16" : "h-auto"
+    )}>
+      <div className="max-w-7xl mx-auto px-4 relative">
+        <button
+          onClick={() => setIsMinimized(!isMinimized)}
+          className="absolute -top-3 right-6 p-1 bg-surface border border-border rounded-full shadow-lg hover:bg-background transition-colors"
+        >
+          {isMinimized ? (
+            <ChevronUp className="w-4 h-4 text-textSecondary" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-textSecondary" />
+          )}
+        </button>
+
+        {/* Minimized view */}
+        {isMinimized ? (
+          <div className="flex items-center gap-4 h-16">
             <button
-              onClick={retry}
-              className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+              onClick={togglePlayPause}
+              className="p-2 rounded-full bg-secondary text-white hover:bg-opacity-90 disabled:opacity-50"
+              type="button"
               disabled={isLoading}
             >
               {isLoading ? (
                 <Loader className="w-5 h-5 animate-spin" />
+              ) : isPlaying ? (
+                <Pause className="w-5 h-5" />
               ) : (
-                'Reintentar'
+                <Play className="w-5 h-5" />
               )}
             </button>
-          </div>
-        )}
-
-        {retryCount > 0 && !loadError && (
-          <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-yellow-500/10 text-yellow-500 rounded-lg">
-            <AlertCircle className="w-5 h-5" />
-            <span>Reintentando cargar el audio... (Intento {retryCount} de 3)</span>
-          </div>
-        )}
-
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between text-sm text-textSecondary mb-2">
-            <div className="hidden sm:block">
-              Progreso total: {Math.round(overallProgress)}%
-            </div>
-            <div className="flex flex-col sm:flex-row sm:gap-4 items-end sm:items-center">
-              {currentChapterRemaining && (
-                <div>
-                  Tiempo restante del capítulo: {formatTime(currentChapterRemaining)}
-                </div>
-              )}
-              <div>
-                Tiempo restante total: {formatTime(remainingTime)} ({playbackSpeed}x)
-              </div>
-            </div>
-          </div>
-
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            value={currentTime}
-            onChange={(e) => handleProgressChange(parseFloat(e.target.value))}
-            className="w-full"
-            disabled={isLoading}
-          />
-
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            {hasChapters && (
-              <select
-                value={currentChapter}
-                onChange={(e) => onChapterChange(Number(e.target.value))}
-                className="w-full sm:w-64 rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
+            
+            <div className="flex-1">
+              <input
+                type="range"
+                min="0"
+                max={duration}
+                value={currentTime}
+                onChange={(e) => handleProgressChange(parseFloat(e.target.value))}
+                className="w-full"
                 disabled={isLoading}
-              >
-                {format.chapters.map((chapter, index) => (
-                  <option key={chapter.number} value={index}>
-                    {getChapterTitle(chapter)}
-                  </option>
-                ))}
-              </select>
+              />
+            </div>
+            
+            <div className="text-sm text-textSecondary whitespace-nowrap">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </div>
+          </div>
+        ) : (
+          /* Full view */
+          <div className="py-4">
+            {loadError && (
+              <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-red-500/10 text-red-500 rounded-lg">
+                <AlertCircle className="w-5 h-5" />
+                <span>Error al cargar el audio.</span>
+                <button
+                  onClick={retry}
+                  className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Loader className="w-5 h-5 animate-spin" />
+                  ) : (
+                    'Reintentar'
+                  )}
+                </button>
+              </div>
             )}
 
-            <div className="flex items-center gap-4">
-              {hasChapters && (
-                <button
-                  onClick={() => onChapterChange(currentChapter - 1)}
-                  disabled={currentChapter === 0 || isLoading}
-                  className="p-2 rounded-full hover:bg-background disabled:opacity-50"
-                  type="button"
-                >
-                  <SkipBack className="w-6 h-6" />
-                </button>
-              )}
-
-              <button
-                onClick={togglePlayPause}
-                className="p-3 rounded-full bg-secondary text-white hover:bg-opacity-90 disabled:opacity-50"
-                type="button"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <Loader className="w-6 h-6 animate-spin" />
-                ) : isPlaying ? (
-                  <Pause className="w-6 h-6" />
-                ) : (
-                  <Play className="w-6 h-6" />
-                )}
-              </button>
-
-              {hasChapters && (
-                <button
-                  onClick={() => onChapterChange(currentChapter + 1)}
-                  disabled={currentChapter === format.chapters.length - 1 || isLoading}
-                  className="p-2 rounded-full hover:bg-background disabled:opacity-50"
-                  type="button"
-                >
-                  <SkipForward className="w-6 h-6" />
-                </button>
-              )}
-            </div>
-
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
-              <select
-                value={playbackSpeed}
-                onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}
-                className="rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
-                disabled={isLoading}
-              >
-                {PLAYBACK_SPEEDS.map((speed) => (
-                  <option key={speed} value={speed}>
-                    {speed}x
-                  </option>
-                ))}
-              </select>
-
-              <div className="flex items-center gap-2">
-                <Volume2 className="w-5 h-5 text-textSecondary" />
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.1"
-                  value={volume}
-                  onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-                  className="w-24"
-                  disabled={isLoading}
-                />
+            {retryCount > 0 && !loadError && (
+              <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-yellow-500/10 text-yellow-500 rounded-lg">
+                <AlertCircle className="w-5 h-5" />
+                <span>Reintentando cargar el audio... (Intento {retryCount} de 3)</span>
               </div>
+            )}
 
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <button
-                    type="button"
-                    className={`p-2 rounded-full hover:bg-background ${
-                      sleepTimer ? 'text-secondary' : 'text-textSecondary'
-                    }`}
-                    disabled={isLoading}
-                  >
-                    <Moon className="w-5 h-5" />
-                  </button>
-                  {sleepTimer && (
-                    <div className="absolute -top-2 -right-2 text-xs bg-secondary text-white px-1 rounded-full">
-                      {getRemainingTimerTime()}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between text-sm text-textSecondary mb-2">
+                <div className="hidden sm:block">
+                  Progreso total: {Math.round(overallProgress)}%
+                </div>
+                <div className="flex flex-col sm:flex-row sm:gap-4 items-end sm:items-center">
+                  {currentChapterRemaining && (
+                    <div>
+                      Tiempo restante del capítulo: {formatTime(currentChapterRemaining)}
                     </div>
                   )}
-                </div>
-                <div className="flex gap-1">
-                  {SLEEP_TIMER_OPTIONS.map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => handleSleepTimer(option.value)}
-                      type="button"
-                      className={`px-2 py-1 text-sm rounded ${
-                        sleepTimer === option.value
-                          ? 'bg-secondary text-white'
-                          : 'bg-background text-textSecondary hover:bg-opacity-70'
-                      }`}
-                      disabled={isLoading}
-                    >
-                      {option.value}'
-                    </button>
-                  ))}
+                  <div>
+                    Tiempo restante total: {formatTime(remainingTime)} ({playbackSpeed}x)
+                  </div>
                 </div>
               </div>
 
-              <div className="text-sm text-textSecondary">
-                <span>{formatTime(currentTime)}</span>
-                <span className="mx-1">/</span>
-                <span>{formatTime(duration)}</span>
+              <input
+                type="range"
+                min="0"
+                max={duration}
+                value={currentTime}
+                onChange={(e) => handleProgressChange(parseFloat(e.target.value))}
+                className="w-full"
+                disabled={isLoading}
+              />
+
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                {hasChapters && (
+                  <select
+                    value={currentChapter}
+                    onChange={(e) => onChapterChange(Number(e.target.value))}
+                    className="w-full sm:w-64 rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
+                    disabled={isLoading}
+                  >
+                    {format.chapters.map((chapter, index) => (
+                      <option key={chapter.number} value={index}>
+                        {getChapterTitle(chapter)}
+                      </option>
+                    ))}
+                  </select>
+                )}
+
+                <div className="flex items-center gap-4">
+                  {hasChapters && (
+                    <button
+                      onClick={() => onChapterChange(currentChapter - 1)}
+                      disabled={currentChapter === 0 || isLoading}
+                      className="p-2 rounded-full hover:bg-background disabled:opacity-50"
+                      type="button"
+                    >
+                      <SkipBack className="w-6 h-6" />
+                    </button>
+                  )}
+
+                  <button
+                    onClick={togglePlayPause}
+                    className="p-3 rounded-full bg-secondary text-white hover:bg-opacity-90 disabled:opacity-50"
+                    type="button"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Loader className="w-6 h-6 animate-spin" />
+                    ) : isPlaying ? (
+                      <Pause className="w-6 h-6" />
+                    ) : (
+                      <Play className="w-6 h-6" />
+                    )}
+                  </button>
+
+                  {hasChapters && (
+                    <button
+                      onClick={() => onChapterChange(currentChapter + 1)}
+                      disabled={currentChapter === format.chapters.length - 1 || isLoading}
+                      className="p-2 rounded-full hover:bg-background disabled:opacity-50"
+                      type="button"
+                    >
+                      <SkipForward className="w-6 h-6" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
+                  <select
+                    value={playbackSpeed}
+                    onChange={(e) => handleSpeedChange(parseFloat(e.target.value))}
+                    className="rounded-md border-border bg-background text-text shadow-sm focus:border-secondary focus:ring-secondary"
+                    disabled={isLoading}
+                  >
+                    {PLAYBACK_SPEEDS.map((speed) => (
+                      <option key={speed} value={speed}>
+                        {speed}x
+                      </option>
+                    ))}
+                  </select>
+
+                  <div className="flex items-center gap-2">
+                    <Volume2 className="w-5 h-5 text-textSecondary" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.1"
+                      value={volume}
+                      onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                      className="w-24"
+                      disabled={isLoading}
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <button
+                        type="button"
+                        className={`p-2 rounded-full hover:bg-background ${
+                          sleepTimer ? 'text-secondary' : 'text-textSecondary'
+                        }`}
+                        disabled={isLoading}
+                      >
+                        <Moon className="w-5 h-5" />
+                      </button>
+                      {sleepTimer && (
+                        <div className="absolute -top-2 -right-2 text-xs bg-secondary text-white px-1 rounded-full">
+                          {getRemainingTimerTime()}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex gap-1">
+                      {SLEEP_TIMER_OPTIONS.map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => handleSleepTimer(option.value)}
+                          type="button"
+                          className={`px-2 py-1 text-sm rounded ${
+                            sleepTimer === option.value
+                              ? 'bg-secondary text-white'
+                              : 'bg-background text-textSecondary hover:bg-opacity-70'
+                          }`}
+                          disabled={isLoading}
+                        >
+                          {option.value}'
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

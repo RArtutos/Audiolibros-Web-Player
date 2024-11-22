@@ -8,6 +8,9 @@ import { useRecentBooks } from '../hooks/useRecentBooks';
 import { useFavorites } from '../hooks/useFavorites';
 import { useTheme } from '../hooks/useTheme';
 
+const MAX_RETRIES = 5;
+const RETRY_DELAY = 2000; // 2 seconds
+
 export default function AudiobookDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -18,6 +21,7 @@ export default function AudiobookDetail() {
   const [currentChapter, setCurrentChapter] = useState(0);
   const [audioUrl, setAudioUrl] = useState<string>('');
   const [isLoadingAudio, setIsLoadingAudio] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const { playbackState, updatePlaybackState, calculateCurrentChapter } = usePlaybackState(id);
   const { addRecentBook } = useRecentBooks();
   const { toggleFavorite, isFavorite } = useFavorites();
@@ -74,7 +78,7 @@ export default function AudiobookDetail() {
     };
   }, [id, addRecentBook]);
 
-  // Fetch audio URL separately
+  // Fetch audio URL with retry logic
   const fetchAudioUrl = useCallback(async () => {
     if (!book?.idDownload) return;
     
@@ -86,12 +90,20 @@ export default function AudiobookDetail() {
       }
       const { url } = await audioResponse.json();
       setAudioUrl(url);
+      setRetryCount(0); // Reset retry count on success
     } catch (error) {
       console.error('Error loading audio URL:', error);
+      if (retryCount < MAX_RETRIES) {
+        console.log(`Retrying... Attempt ${retryCount + 1} of ${MAX_RETRIES}`);
+        setTimeout(() => {
+          setRetryCount(prev => prev + 1);
+          fetchAudioUrl();
+        }, RETRY_DELAY);
+      }
     } finally {
       setIsLoadingAudio(false);
     }
-  }, [book?.idDownload]);
+  }, [book?.idDownload, retryCount]);
 
   useEffect(() => {
     if (book) {
